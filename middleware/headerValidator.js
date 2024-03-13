@@ -41,6 +41,7 @@ const headerValidator = {
                 if (apiKey !== '') {
                     const decApiKey = (req.headers['api-key'] != undefined && req.headers['api-key'] != '') ? crypto.AES.decrypt(req.headers['api-key'], SECRET, { iv: IV }).toString(crypto.enc.Utf8) : "";
                     console.log('decApiKey mila ',decApiKey);
+                    console.log('API_KEY original',process.env.API_KEY);
                     // const decApiKey = JSON.parse(CryptoJS.AES.decrypt(apiKey, SECRET, { iv: IV }));
                     if (decApiKey === `"${process.env.API_KEY}"`) {
                         next();
