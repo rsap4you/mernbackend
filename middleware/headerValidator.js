@@ -33,7 +33,7 @@ const headerValidator = {
 
     // Function to validate API key of header (Note : Header keys are encrypted)
     validateHeaderApiKey: async (req, res, next) => {
-     console.log('header mila ',req.headers);
+     console.log('header mila ',req.headers['api-key']);
         try {
             const apiKey = req.headers['api-key'] !== undefined && req.headers['api-key'] !== "" ? req.headers['api-key'] : '';
             const pathData = req.path.split("/");
