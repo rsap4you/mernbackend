@@ -70,11 +70,13 @@ const updatePassword = async (req, res) => {
 
 const editUser = async (req, res) => {
     const request = await middleware.decryption(req);
-    // console.log('request: ', request);
+
+    // console.log('request: =======================>', request);
 
     const valid = await middleware.checkValidationRules(request, validationRules.editUserValidation)
 
     if (valid.status) {
+        // console.log('sadfshdfsfdghdg',request);
         return userModel.editUser(request, res)
     } else {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);

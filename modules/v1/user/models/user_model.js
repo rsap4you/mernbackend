@@ -118,15 +118,14 @@ const userModel = {
         if (update_user.modifiedCount <= 0) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
-        // let data = await userModel.userData(userData._id);
-        // console.log('aaa', userData);
+     
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_sendotp_success_message, upd_params);
     },
 
     async login(req, res) {
 
         const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_deleted: "0" }] });
-        console.log('userData++++++++++++++++++++++++++++,', userData);
+    
         if (!userData) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
         }
@@ -191,9 +190,12 @@ const userModel = {
 
 
     async editUser(req, res) {
-        console.log('REQ ++++++++++++++++++++++', req);
-        const userData = await UserSchema.findOne({ _id: { _id: req } });
-        console.log("userdata_____________________________>>>>>>>>>>>>>>>>>>>>>>>>", userData);
+
+
+        const userData = await UserSchema.findOne({ _id: { _id: req._id } });
+
+ 
+
         if (!userData) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
         }
@@ -202,6 +204,7 @@ const userModel = {
         }
 
         let upd_params = {
+            _id:req._id,
             first_name: req.first_name,
             last_name: req.last_name,
             email: req.email,
@@ -225,17 +228,17 @@ const userModel = {
       
         let status = req.is_active;
 
-        console.log('status', status);
+    
     
         let updateFields = {
             "is_active": status,
         };
-console.log('userid mila model me ',req.userId);
+
         let update_status = await UserSchema.updateOne(
             { _id: req.userId },
             { $set: updateFields }
         );
-        console.log('update_status', update_status);
+ 
     
         if (update_status.modifiedCount <= 0) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);

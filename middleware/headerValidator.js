@@ -33,16 +33,14 @@ const headerValidator = {
 
     // Function to validate API key of header (Note : Header keys are encrypted)
     validateHeaderApiKey: async (req, res, next) => {
-     console.log('header mila ',req.headers['api-key']);
+   
         try {
             const apiKey = req.headers['api-key'] !== undefined && req.headers['api-key'] !== "" ? req.headers['api-key'] : '';
             const pathData = req.path.split("/");
             if (bypassHeaderKey.indexOf(pathData[2]) === -1) {
                 if (apiKey !== '') {
                     const decApiKey = (req.headers['api-key'] != undefined && req.headers['api-key'] != '') ? crypto.AES.decrypt(req.headers['api-key'], SECRET, { iv: IV }).toString(crypto.enc.Utf8) : "";
-                    console.log('decApiKey mila ',decApiKey);
-                    console.log('API_KEY original',process.env.API_KEY);
-                    // const decApiKey = JSON.parse(CryptoJS.AES.decrypt(apiKey, SECRET, { iv: IV }));
+                
                     if (decApiKey === `"${process.env.API_KEY}"`) {
                         next();
                     } else {
@@ -101,12 +99,11 @@ const headerValidator = {
   decryption: async (req) => {
     try {
         let data1 = req.body;
-        // console.log('req.body: ', req.body);
-        // const decryptedData = JSON.parse(crypto.AES.decrypt(data1, SECRET, { iv: IV }).toString(crypto.enc.Utf8));
+  
         const decryptedData = await crypto.AES.decrypt(data1, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
-        // console.log('decryptedData: ', decryptedData);
+        
         let data = headerValidator.isJson(decryptedData);
-        // console.log('data: ', data);
+       
         data.language = req.language
         data.user_id = req.user_id
         return data;
@@ -116,53 +113,7 @@ const headerValidator = {
     }
 },
 
-    // decryption: async (req) => {
-    //     try {
-    //         if (req.body !== undefined && Object.keys(req.body).length !== 0) {
-    //             let encryptedData = req.body; // replace 'encryptedData' with the actual key in req.body
-    //             console.log(' typeof encryptedData: ', typeof (encryptedData));
-    //             console.log('encryptedData: ', encryptedData);
-    //             const cipherParams = crypto.enc.Base64.parse(encryptedData);
-
-    //             const decrypted = crypto.AES.decrypt(cipherParams, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
-    //             console.log('decrypted: ', decrypted);
-
-    //             // If the decrypted data is in JSON format, you can parse it
-    //             const request = JSON.parse(decrypted);
-    //             console.log('request: ', request);
-
-    //             return request;
-    //         }
-    //     } catch (error) {
-    //         console.error('Decryption error: ', error);
-    //         return {};
-    //     }
-    // },
-
-    //     decryption: async (req) => {
-    //     try {
-    //         if (req.body !== undefined && Object.keys(req.body).length !== 0) {
-    //             let encryptedData = req.body; // replace 'encryptedData' with the actual key in req.body
-    //             console.log(' typeof encryptedData: ', typeof (encryptedData));
-    //             console.log('encryptedData: ', encryptedData);
-
-    //             // Convert the encrypted data string into a CipherParams object
-    //             const cipherParams = crypto.enc.Base64.parse(encryptedData);
-
-    //             const decrypted = crypto.AES.decrypt(cipherParams, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
-    //             console.log('decrypted: ', decrypted);
-
-    //             // If the decrypted data is in JSON format, you can parse it
-    //             const request = JSON.parse(decrypted);
-    //             console.log('request: ', request);
-
-    //             return request;
-    //         }
-    //     } catch (error) {
-    //         console.error('Decryption error: ', error);
-    //         return {};
-    //     }
-    // },
+  
 
 
     // Encrypt user request
