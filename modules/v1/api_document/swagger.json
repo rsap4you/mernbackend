@@ -1,0 +1,1481 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a simple Swagger Documentation NodeJS API pactap project to demonstrate ",
+        "version": "1.0.0",
+        "title": "API DOCUMENT",
+        "contact": {
+            "email": "pactap@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "schemes": [
+        "http"
+    ],
+    "host": "localhost:8025",
+    "basePath": "/api/v1",
+    "paths": {
+        "/user-auth/user-signup": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "User Create Account",
+                "description": "This API is use for User signup in Application.",
+                "operationId": "user-signup",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Create Account",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "role",
+                                "first_name",
+                                "last_name",
+                                "email",
+                                "registered_company_name",
+                                "zip_code",
+                                "country",
+                                "mobile_number",
+                                "password"
+                            ],
+                            "properties": {
+                                "role": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "user",
+                                    "enum": [
+                                        "user",
+                                        "vendor"
+                                    ]
+                                },
+                                "profile_image": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "default.jpg"
+                                },
+                                "first_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "John"
+                                },
+                                "last_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "Depp"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "john@mailinator.com"
+                                },
+                                "registered_company_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "zip_code": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "123456"
+                                },
+                                "country": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "India"
+                                },
+                                "mobile_number": {
+                                    "type": "number",
+                                    "description": "",
+                                    "example": "9856785458"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "12345"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-auth/user-login": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "User Account Login",
+                "description": "This API is use for User Login to Application.",
+                "operationId": "user-login",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Login Account",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email",
+                                "password",
+                                "device_type",
+                                "device_token"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "john@mailinator.com"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "12345"
+                                },
+                                "device_type": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "A",
+                                    "enum": [
+                                        "A",
+                                        "I"
+                                    ]
+                                },
+                                "device_token": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "y7djYjDKZuUR/mLHmgQwzszsHwY7"
+                                },
+                                "device_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "os_version": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "ip": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "model_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "uuid": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-auth/user-send-otp": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Send OTP",
+                "description": "This API is use for send OTP to user.",
+                "operationId": "user-send-otp",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Send OTP",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "role",
+                                "email"
+                            ],
+                            "properties": {
+                                "role": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "user",
+                                    "enum": [
+                                        "user",
+                                        "vendor"
+                                    ]
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "john@mailinator.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-auth/user-verify-otp": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "User Verify OTP",
+                "description": "This API is use for verify OTP of user.",
+                "operationId": "user-verify-otp",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Verify OTP",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email",
+                                "otp"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "john@mailinator.com"
+                                },
+                                "otp": {
+                                    "type": "number",
+                                    "description": "",
+                                    "example": "1234"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-auth/user-forgot-password": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "User Forgot Password",
+                "description": "This API is use for Forgot Password to user.",
+                "operationId": "user-forgot-password",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Forgot Password",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "john@mailinator.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-auth/user-reset-password": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Reset Password",
+                "description": "This API is use for Reset Password to user.",
+                "operationId": "user-reset-password",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Reset Password",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email",
+                                "new_password"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "john@mailinator.com"
+                                },
+                                "new_password": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "12345"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-auth/user-complete-profile": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Complete Profile",
+                "description": "This API is use for complete profile to user.",
+                "operationId": "user-complete-profile",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "description": "Please add encrypted Token"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Complete Profile",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "logo",
+                                "name",
+                                "website",
+                                "country",
+                                "zip_code",
+                                "corporate_identification_number",
+                                "ein"
+                            ],
+                            "properties": {
+                                "logo": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "website": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "www.google.com"
+                                },
+                                "country": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "India"
+                                },
+                                "zip_code": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "123456"
+                                },
+                                "corporate_identification_number": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "ein": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-auth/user-edit-address": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Edit Address",
+                "description": "This API is use for Edit Address of user.",
+                "operationId": "user-edit-address",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "description": "Please add encrypted Token"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Edit Address",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "address_id",
+                                "address",
+                                "state",
+                                "country",
+                                "zip_code"
+                            ],
+                            "properties": {
+                                "address_id": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "state": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "country": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "India"
+                                },
+                                "zip_code": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "123456"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user-auth/getuserdetails": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Get User Details",
+                "description": "This API is use for getting details of user.",
+                "operationId": "getuserdetails",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "description": "Please add encrypted Token"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "Get User Details",
+                        "required": true,
+                        "schema": {
+                            "required": [],
+                            "properties": {}
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendor-auth/vendor-signup": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Vendor Create Account",
+                "description": "This API is use for vendor signup in Application.",
+                "operationId": "vendor-signup",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "Create Account for Vendor",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "role",
+                                "first_name",
+                                "last_name",
+                                "email",
+                                "company_name",
+                                "gst_number",
+                                "zip_code",
+                                "country",
+                                "mobile_number",
+                                "password"
+                            ],
+                            "properties": {
+                                "role": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "vendor",
+                                    "enum": [
+                                        "user",
+                                        "vendor"
+                                    ]
+                                },
+                                "profile_image": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "default.jpg"
+                                },
+                                "first_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "Tom"
+                                },
+                                "last_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "Smith"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "tom@mailinator.com"
+                                },
+                                "company_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "gst_number": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "zip_code": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "123456"
+                                },
+                                "country": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "India"
+                                },
+                                "mobile_number": {
+                                    "type": "number",
+                                    "description": "",
+                                    "example": "9856785458"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "12345"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendor-auth/vendor-login": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "User Account Login",
+                "description": "This API is use for Vendor Login to Application.",
+                "operationId": "vendor-login",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "Vendor Login Account",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email",
+                                "password",
+                                "device_type",
+                                "device_token"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "tom@mailinator.com"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "12345"
+                                },
+                                "device_type": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "A",
+                                    "enum": [
+                                        "A",
+                                        "I"
+                                    ]
+                                },
+                                "device_token": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "y7djYjDKZuUR/mLHmgQwzszsHwY7"
+                                },
+                                "device_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "os_version": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "ip": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "model_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "uuid": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendor-auth/vendor-send-otp": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Send OTP",
+                "description": "This API is use for send OTP to vendor.",
+                "operationId": "vendor-send-otp",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Send OTP",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "role",
+                                "email"
+                            ],
+                            "properties": {
+                                "role": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "vendor",
+                                    "enum": [
+                                        "user",
+                                        "vendor"
+                                    ]
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "tom@mailinator.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendor-auth/vendor-verify-otp": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Vendor Verify OTP",
+                "description": "This API is use for verify OTP of vendor.",
+                "operationId": "vendor-verify-otp",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "User Verify OTP",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email",
+                                "otp"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "tom@mailinator.com"
+                                },
+                                "otp": {
+                                    "type": "number",
+                                    "description": "",
+                                    "example": "1234"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendor-auth/vendor-forgot-password": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "User Forgot Password",
+                "description": "This API is use for Forgot Password to vendor.",
+                "operationId": "vendor-forgot-password",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "Vendor Forgot Password",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "tom@mailinator.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendor-auth/vendor-reset-password": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Reset Password",
+                "description": "This API is use for Reset Password to vendor.",
+                "operationId": "vendor-reset-password",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "Vendor Reset Password",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "email",
+                                "new_password"
+                            ],
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "tom@mailinator.com"
+                                },
+                                "new_password": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": "12345"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendor-auth/vendor-complete-profile": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Vendor Complete Profile",
+                "description": "This API is use for complete profile to user.",
+                "operationId": "vendor-complete-profile",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "description": "Please add encrypted Token"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "Vendor Complete Profile",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "company_logo",
+                                "registered_company_name",
+                                "about_us",
+                                "brand_name",
+                                "year_of_establishment",
+                                "vendor_country",
+                                "vendor_state",
+                                "annual_turnover",
+                                "company_website",
+                                "tax_id",
+                                "ein"
+                            ],
+                            "properties": {
+                                "company_logo": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "registered_company_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "about_us": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "brand_name": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "year_of_establishment": {
+                                    "type": "number",
+                                    "description": "",
+                                    "example": "2015"
+                                },
+                                "vendor_country": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "vendor_state": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "annual_turnover": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "company_website": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "tax_id": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                },
+                                "ein": {
+                                    "type": "string",
+                                    "description": "",
+                                    "example": ""
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/vendor-auth/getvendordetails": {
+            "post": {
+                "tags": [
+                    "Authenticate"
+                ],
+                "summary": "Get Vendor Details",
+                "description": "This API is use for getting details of vendor.",
+                "operationId": "getuserdetails",
+                "consumes": [
+                    "text/plain",
+                    "application/json"
+                ],
+                "produces": [
+                    "text/plain"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "api-key",
+                        "type": "string",
+                        "required": true,
+                        "default": "vJj64eBmHpbRHDx2lWn7Wg=",
+                        "description": "Please add encrypted API KEY"
+                    },
+                    {
+                        "in": "header",
+                        "name": "token",
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "description": "Please add encrypted Token"
+                    },
+                    {
+                        "in": "header",
+                        "name": "accept-language",
+                        "type": "string",
+                        "required": true,
+                        "default": "en",
+                        "description": "en"
+                    },
+                    {
+                        "in": "body",
+                        "name": "data",
+                        "description": "Get Vendor Details",
+                        "required": true,
+                        "schema": {
+                            "required": [],
+                            "properties": {}
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/ApiResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ApiResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "data": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Encyption Decryption Link",
+        "url": "http://localhost/test/pactap/api/enc_dec.php"
+    }
+}
