@@ -73,8 +73,6 @@ const userModel = {
         }
     },
 
-
-
     async otp_verification(req, res) {
         const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_active: "1" }, { is_deleted: "0" }] });
         if (!userData) {
@@ -119,6 +117,7 @@ const userModel = {
 
     async login(req, res) {
 
+        
         const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_deleted: "0" }] });
     
         if (!userData) {
