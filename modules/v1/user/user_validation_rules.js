@@ -27,8 +27,8 @@ const checkValidatorRules = {
     },
 
     updatePasswordValidation: {
-        mobile: "required",
-        new_password: "required"
+        // mobile: "required",
+        // new_password: "required"
     } ,
     
 
