@@ -41,15 +41,15 @@ const userModel = {
         };
 
         let user = {
-            first_name:  (req.first_name !== undefined || req.first_name !== null ) ? req.first_name : "",
-            last_name:  (req.last_name !== undefined || req.last_name !== null) ? req.last_name : "",
-            email: (req.email !== undefined || req.email !== null) ? req.email : "",
-            mobile_number:(req.mobile_number !== undefined || req.mobile_number !== null) ? req.mobile_number : "",
+            first_name:  (req.first_name != undefined || req.first_name != null ) ? req.first_name : "",
+            last_name:  (req.last_name != undefined || req.last_name != null) ? req.last_name : "",
+            email: (req.email != undefined || req.email != null) ? req.email : "",
+            mobile_number:(req.mobile_number != undefined || req.mobile_number != null) ? req.mobile_number : "",
             // password: encPass,
-            password: (req.password !== undefined || req.password !== null) ? req.encPass : "",
-            otp_code: (req.otp_code !== undefined || req.otp_code !== null) ? req.otp_code : "",
-            is_verify: (req.is_verify !== undefined || req.is_verify !== null) ? req.is_verify : "0",
-            profile_image: (req.profile_image !== undefined || req.profile_image !== null) ? req.profile_image : "default.jpg",
+            password: (req.password != undefined || req.password != null) ? req.encPass : "",
+            otp_code: (req.otp_code != undefined || req.otp_code != null) ? req.otp_code : "",
+            is_verify: (req.is_verify != undefined || req.is_verify != null) ? req.is_verify : "0",
+            profile_image: (req.profile_image != undefined || req.profile_image != null) ? req.profile_image : "default.jpg",
             device_info: user_device
         };
 
