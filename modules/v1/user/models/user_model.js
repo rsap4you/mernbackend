@@ -13,7 +13,8 @@ const { log } = require('winston');
 const userModel = {
 
     async register(req, res) {
-
+       console.log('languageee',req.language);
+       
         const checkEmailUnique = await common.checkUniqueEmail(req);
         if (checkEmailUnique) {
             return await middleware.sendResponse(res, Codes.NOT_FOUND, lang[req.language].rest_keywords_unique_email_error, null)

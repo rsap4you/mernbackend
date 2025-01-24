@@ -17,7 +17,7 @@ const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-use
 const bypassHeaderKey = new Array("encryption_demo", "decryption_demo", "sendnotification", "resetpasswordForm", "resetPass");
 
 const headerValidator = {
-    
+
     // function for extract accept language from request header and set in req globaly
     extractHeaderLanguage: async (req, res, next) => {
         try {
@@ -95,19 +95,55 @@ const headerValidator = {
         return false;
     },
   // Decrypt user request
-  decryption: async (req) => {
-    try {
-        let data1 = req.body;
-  
-        const decryptedData = await crypto.AES.decrypt(data1, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
+//   decryption: async (req) => {
+//     console.log('req.language',req.language);
+    
+//     try {
+//         let data1 ;
         
+        
+//         const decryptedData = await crypto.AES.decrypt(req.body, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
+        
+//         let data = headerValidator.isJson(decryptedData);
+//         console.log('data: ', data);
+        
+//         data1.language = req.language
+//         data.user_id = req.user_id
+//         // console.log('data1: ', data1.language);
+//         console.log('data1: ', data1);
+//         return data;
+//     } catch (error) {
+//         console.log('error: ', error);
+//         return {};
+//     }
+// },
+
+
+decryption: async (req) => {
+    console.log('req.language', req.language); // Logging req.language for debugging
+
+    try {
+        // Declare and initialize data1 as an object
+        let data1 = {};
+        
+        // Decrypt the incoming request body
+        const decryptedData = await crypto.AES.decrypt(req.body, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
+
+        // Parse the decrypted data as JSON
         let data = headerValidator.isJson(decryptedData);
-       
-        data.language = req.language
-        data.user_id = req.user_id
-        return data;
+        console.log('data: ', data);
+
+        // Add language and user_id to the decrypted data
+        data1 = { ...data }; // Copy data into data1
+        data1.language = req.language; // Add language to data1
+        data1.user_id = req.user_id; // Add user_id to data1
+
+        // Log data1 for debugging
+        console.log('data1: ', data1);
+
+        return data1; // Return the modified object
     } catch (error) {
-        console.log('error: ', error);
+        console.log('error: ', error); // Log errors
         return {};
     }
 },
