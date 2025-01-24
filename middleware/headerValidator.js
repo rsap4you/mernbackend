@@ -7,7 +7,6 @@ const logger = require('../logger');
 const Codes = require('../config/status_codes');
 const UserSchema = require("../modules/schema/user_schema");
 
-
 const SECRET = crypto.enc.Hex.parse(process.env.KEY);
 const IV = crypto.enc.Hex.parse(process.env.IV);
 
@@ -18,7 +17,7 @@ const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-use
 const bypassHeaderKey = new Array("encryption_demo", "decryption_demo", "sendnotification", "resetpasswordForm", "resetPass");
 
 const headerValidator = {
-
+    
     // function for extract accept language from request header and set in req globaly
     extractHeaderLanguage: async (req, res, next) => {
         try {
@@ -113,9 +112,6 @@ const headerValidator = {
     }
 },
 
-  
-
-
     // Encrypt user request
     encryption: async (req) => {
         try {
@@ -165,8 +161,7 @@ const headerValidator = {
         }
 
     },
-
-
+    
     // function for send Response
     sendResponse: async (res, resCode, msgKey, resData) => {
         try {
@@ -188,7 +183,6 @@ const headerValidator = {
 
     },
 
-    // check Validation Rules
     checkValidationRules: async (request, rules) => {
         try {
             const v = Validator.make(request, rules);

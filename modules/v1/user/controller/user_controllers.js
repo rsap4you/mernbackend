@@ -9,7 +9,7 @@ const register = async (req, res) => {
     const valid = await middleware.checkValidationRules(request, validationRules.sigupValidation)
 
     if (valid.status) {
-        return userModel.register(request, res)
+    return userModel.register(request, res)
     } else {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
@@ -82,8 +82,6 @@ const editUser = async (req, res) => {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
 }
-
-
 
 // ******************************************************Active inactive ***************************************
 

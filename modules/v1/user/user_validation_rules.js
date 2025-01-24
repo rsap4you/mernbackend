@@ -1,6 +1,7 @@
 const checkValidatorRules = {
 
     sigupValidation: {
+        
         // first_name: "required",
         // last_name: "required",
          // dob: "required",

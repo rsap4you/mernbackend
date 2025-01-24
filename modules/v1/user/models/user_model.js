@@ -3,17 +3,14 @@ const common = require("../../../../config/common");
 const lang = require("../../../../config/language");
 const Codes = require("../../../../config/status_codes");
 const UserSchema = require("../../../schema/user_schema");
-// const OtpSchema = require('../../../schema/otp_schema');
-// const UserCompanySchema = require("../../../schema/user_company_schema");
-// const AddressSchema = require("../../../schema/address_schema");
-// const UserAgreementTermsSchema = require("../../../schema/user_agreement_terms_schema");
+
+
 const middleware = require("../../../../middleware/headerValidator");
 const template = require("../../../../config/template");
 const redis = require("../../../../config/redis");
 const { log } = require('winston');
 
 const userModel = {
-
 
     async register(req, res) {
 
@@ -32,7 +29,6 @@ const userModel = {
  
         const existingUser = await UserSchema.findOne({ 'device_info.token': token });
 
-    
         if (existingUser) {
  
             return this.register(req, res);
@@ -60,7 +56,7 @@ const userModel = {
         let OTP = Math.floor(1000 + Math.random() * 9000);
         user.otp_code = OTP;
 
-        const newUser = new UserSchema(user);
+        const newUser = new UserSchema(user);``
 
         try {
             await newUser.validate();
@@ -116,8 +112,6 @@ const userModel = {
     },
 
     async login(req, res) {
-
-        
         const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_deleted: "0" }] });
     
         if (!userData) {
@@ -185,10 +179,7 @@ const userModel = {
 
     async editUser(req, res) {
 
-
         const userData = await UserSchema.findOne({ _id: { _id: req._id } });
-
- 
 
         if (!userData) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
@@ -219,11 +210,7 @@ const userModel = {
 
     async active_inactive(req, res) {
         // Assuming req.body.is_active contains the status (1 or 0)
-      
         let status = req.is_active;
-
-    
-    
         let updateFields = {
             "is_active": status,
         };
@@ -241,14 +228,12 @@ const userModel = {
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_success_message   , null);
     },
     
-
-
     // ************************************active inactive user *****************************
 
 
 
     // ************************************Delete user *****************************
-
+    
     async deleteuser(req, res) {
 
         let updateFields = {
@@ -270,7 +255,6 @@ const userModel = {
         return await middleware.sendResponse(res, Codes.SUCCESS, 'success', null);
     },
 
-
     // ************************************Delete user *****************************
 
     async logout(req, res) {
@@ -286,8 +270,6 @@ const userModel = {
 
     async userList(req, res) {
         const userlistdetails = await UserSchema.find({ is_deleted: { $ne: 1 } });
-
-
 
         if (userlistdetails.length > 0) {
 
