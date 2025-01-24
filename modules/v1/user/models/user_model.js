@@ -78,6 +78,7 @@ const userModel = {
         if (userData.otp_code != req.otp) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userotpdata_notvalid_message, null);
         }
+        
         let upd_params = {
             otp_code: "",
             is_verify: "1"

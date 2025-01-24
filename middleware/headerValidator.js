@@ -10,15 +10,13 @@ const UserSchema = require("../modules/schema/user_schema");
 const SECRET = crypto.enc.Hex.parse(process.env.KEY);
 const IV = crypto.enc.Hex.parse(process.env.IV);
 
-// methods that do not check token
+
 const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-user-otp", "otp-verification", "register", "login", "update-password");
 
-// method that not require api key
+
 const bypassHeaderKey = new Array("encryption_demo", "decryption_demo", "sendnotification", "resetpasswordForm", "resetPass");
 
 const headerValidator = {
-
-    // function for extract accept language from request header and set in req globaly
     extractHeaderLanguage: async (req, res, next) => {
         try {
             const language = (req.headers['accept-language'] !== undefined && req.headers['accept-language'] !== '') ? (req.headers['accept-language'] === 'en-GB,en-US;q=0.9,en;q=0.8' ? 'en' : req.headers['accept-language']) : 'en';
@@ -30,7 +28,7 @@ const headerValidator = {
 
     },
 
-    // Function to validate API key of header (Note : Header keys are encrypted)
+
     validateHeaderApiKey: async (req, res, next) => {
    
         try {
@@ -94,6 +92,7 @@ const headerValidator = {
         }
         return false;
     },
+
   // Decrypt user request
 //   decryption: async (req) => {
 //     console.log('req.language',req.language);
@@ -120,7 +119,7 @@ const headerValidator = {
 
 
 decryption: async (req) => {
-    console.log('req.language', req.language); // Logging req.language for debugging
+    console.log('req.language for frontend side ', req); // Logging req.language for debugging
 
     try {
         // Declare and initialize data1 as an object
