@@ -202,8 +202,10 @@ const headerValidator = {
 
     //decrypt user request
     decryption: async (req) => {
+        console.log('req in decryption: ', req);
         if (req.body != undefined && Object.keys(req.body).length !== 0) {
             var request = JSON.parse(CryptoJS.AES.decrypt(req.body, SECRET, { iv: IV }).toString(CryptoJS.enc.Utf8))
+            console.log('request: decryption ', request);
             request.language = req.language;
          
             if (req.headers['type'] == 'admin') {
