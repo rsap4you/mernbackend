@@ -7,9 +7,11 @@ const logger = require('../logger');
 const Codes = require('../config/status_codes');
 const UserSchema = require("../modules/schema/user_schema");
 
-const SECRET = crypto.enc.Hex.parse(process.env.KEY);
-const IV = crypto.enc.Hex.parse(process.env.IV);
+// const SECRET = crypto.enc.Hex.parse(process.env.KEY);
+// const IV = crypto.enc.Hex.parse(process.env.IV);
 
+const SECRET = crypto.enc.Utf8.parse(process.env.KEY);
+const IV = crypto.enc.Utf8.parse(process.env.IV);
 
 const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-user-otp", "otp-verification", "register", "login", "update-password");
 
