@@ -1,7 +1,7 @@
 const Validator = require('Validator');
 
-const crypto = require('crypto-js')
-
+// const crypto = require('crypto-js')
+const CryptoJS = require("crypto-js");
 const lang = require("../config/language");
 const logger = require('../logger');
 const Codes = require('../config/status_codes');
@@ -199,11 +199,6 @@ const headerValidator = {
 //         }
 
 //     },
-
-
-
-
-
 
     //decrypt user request
     decryption: async (req) => {
