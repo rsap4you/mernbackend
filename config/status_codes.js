@@ -5,7 +5,8 @@ const Codes = {
     UNAUTHORIZED: 401,
     INACTIVE: 403,
     NOT_FOUND: 404,
-    ERROR: 400
+    ERROR: 400,
+    ALREADY :212,
 }
 
 module.exports = Codes;

@@ -17,11 +17,11 @@ const userModel = {
        
         const checkEmailUnique = await common.checkUniqueEmail(req);
         if (checkEmailUnique) {
-            return await middleware.sendResponse(res, Codes.NOT_FOUND, lang[req.language].rest_keywords_unique_email_error, null)
+            return await middleware.sendResponse(res, Codes.ALREADY, lang[req.language].rest_keywords_unique_email_error, null)
         }
         const checkMobileUnique = await common.checkUniqueMobile(req.mobile_number);
         if (checkMobileUnique) {
-            return await middleware.sendResponse(res, Codes.NOT_FOUND, lang[req.language].rest_keywords_unique_mobilenumber_error, null)
+            return await middleware.sendResponse(res, Codes.ALREADY, lang[req.language].rest_keywords_unique_mobilenumber_error, null)
         }
         const encPass = await middleware.encryption(req.password);
 
