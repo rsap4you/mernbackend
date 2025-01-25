@@ -30,7 +30,6 @@ const headerValidator = {
 
     },
 
-
     validateHeaderApiKey: async (req, res, next) => {
    
         try {
