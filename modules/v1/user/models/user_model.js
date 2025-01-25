@@ -175,7 +175,6 @@ const userModel = {
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_password_change_success_message, null);
     },
 
-
     async editUser(req, res) {
 
         const userData = await UserSchema.findOne({ _id: { _id: req._id } });
@@ -203,7 +202,6 @@ const userModel = {
         }
         return await middleware.sendResponse(res, Codes.SUCCESS, 'success', null);
     },
-
 
     // ************************************active inactive user *****************************
 
@@ -278,9 +276,7 @@ const userModel = {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
     },
-
-
-
+    
     async getuserData(user_id) {
         let userData = await UserSchema.findOne({ _id: user_id });
         return userData;
