@@ -86,7 +86,6 @@ const editUser = async (req, res) => {
 }
 
 // ******************************************************Active inactive ***************************************
-
 const active_inactive = async (req, res) => {
     // console.log('req--------------------------------------------------->',req);
     console.log('active_inactive',req.body);

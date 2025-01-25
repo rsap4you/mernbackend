@@ -120,30 +120,20 @@ const headerValidator = {
 
 
 decryption: async (req) => {
-    console.log('req.language for frontend side ', req); // Logging req.language for debugging
+
 
     try {
-        // Declare and initialize data1 as an object
+  
         let data1 = {};
         
-        // Decrypt the incoming request body
         const decryptedData = await crypto.AES.decrypt(req.body, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
-
-        // Parse the decrypted data as JSON
         let data = headerValidator.isJson(decryptedData);
-        console.log('data: ', data);
-
-        // Add language and user_id to the decrypted data
-        data1 = { ...data }; // Copy data into data1
-        data1.language = req.language; // Add language to data1
-        data1.user_id = req.user_id; // Add user_id to data1
-
-        // Log data1 for debugging
-        console.log('data1: ', data1);
-
-        return data1; // Return the modified object
+        data1 = { ...data }; 
+        data1.language = req.language; 
+        data1.user_id = req.user_id;
+        return data1;
     } catch (error) {
-        console.log('error: ', error); // Log errors
+        console.log('error: ', error);
         return {};
     }
 },
