@@ -261,7 +261,6 @@ const headerValidator = {
 
     decryptiondemo: async (req, res) => {
         console.log('req=================',req)
-        
         try {
             const decryptedData = JSON.parse(CryptoJS.AES.decrypt(req, SECRET, { iv: IV }).toString(CryptoJS.enc.Utf8));
             let data = common.isJson(decryptedData);
