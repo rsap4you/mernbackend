@@ -7,9 +7,10 @@ const logger = require('../logger');
 const Codes = require('../config/status_codes');
 const UserSchema = require("../modules/schema/user_schema");
 
-const SECRET = crypto.enc.Hex.parse(process.env.KEY);
-const IV = crypto.enc.Hex.parse(process.env.IV);
-
+// const SECRET = crypto.enc.Hex.parse(process.env.KEY);
+// const IV = crypto.enc.Hex.parse(process.env.IV);
+const SECRET = CryptoJS.enc.Utf8.parse(process.env.KEY);
+const IV = CryptoJS.enc.Utf8.parse(process.env.IV);
 
 const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-user-otp", "otp-verification", "register", "login", "update-password");
 
@@ -118,68 +119,159 @@ const headerValidator = {
 // },
 
 
-decryption: async (req) => {
-    console.log('req.language for frontend side ', req); // Logging req.language for debugging
+// decryption: async (req) => {
+//     console.log('req.language for frontend side ', req); // Logging req.language for debugging
 
-    try {
-        // Declare and initialize data1 as an object
-        let data1 = {};
+//     try {
+//         // Declare and initialize data1 as an object
+//         let data1 = {};
         
-        // Decrypt the incoming request body
-        const decryptedData = await crypto.AES.decrypt(req.body, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
+//         // Decrypt the incoming request body
+//         const decryptedData = await crypto.AES.decrypt(req.body, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
 
-        // Parse the decrypted data as JSON
-        let data = headerValidator.isJson(decryptedData);
-        console.log('data: ', data);
+//         // Parse the decrypted data as JSON
+//         let data = headerValidator.isJson(decryptedData);
+//         console.log('data: ', data);
 
-        // Add language and user_id to the decrypted data
-        data1 = { ...data }; // Copy data into data1
-        data1.language = req.language; // Add language to data1
-        data1.user_id = req.user_id; // Add user_id to data1
+//         // Add language and user_id to the decrypted data
+//         data1 = { ...data }; // Copy data into data1
+//         data1.language = req.language; // Add language to data1
+//         data1.user_id = req.user_id; // Add user_id to data1
 
-        // Log data1 for debugging
-        console.log('data1: ', data1);
+//         // Log data1 for debugging
+//         console.log('data1: ', data1);
 
-        return data1; // Return the modified object
-    } catch (error) {
-        console.log('error: ', error); // Log errors
-        return {};
-    }
-},
+//         return data1; // Return the modified object
+//     } catch (error) {
+//         console.log('error: ', error); // Log errors
+//         return {};
+//     }
+// },
 
-    // Encrypt user request
-    encryption: async (req) => {
-        try {
-            let data = headerValidator.isJson(req);
-            const encryptedData = crypto.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
-            return encryptedData;
+//     // Encrypt user request
+//     encryption: async (req) => {
+//         try {
+//             let data = headerValidator.isJson(req);
+//             const encryptedData = crypto.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
+//             return encryptedData;
 
-        } catch (error) {
-            console.log('error: ', error);
-            return {};
-        }  
+//         } catch (error) {
+//             console.log('error: ', error);
+//             return {};
+//         }  
 
         
+//     },
+
+//     encryptiondemo: (req, res) => {
+//         try {
+//             let data = headerValidator.isJson(req);
+//             const encryptedData = crypto.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
+//             console.log('encryptedData: ', encryptedData);
+//             res.json(encryptedData);
+
+//         } catch (error) {
+//             return '';
+//         }
+//     },
+
+//     decryptiondemo: async (req, res) => {
+//         try {
+//             const decryptedData = JSON.parse(crypto.AES.decrypt(req, SECRET, { iv: IV }).toString(crypto.enc.Utf8));
+//             let data = headerValidator.isJson(decryptedData);
+//             res.json(data);
+//         } catch (error) {
+//             return {};
+//         }
+
+//     },
+    
+//     // check req data is json or string
+//     isJson: (req) => {
+//         try {
+//             const parsedObject = JSON.parse(req);
+//             return parsedObject;
+//             // return parsedObject;
+//         } catch (error) {
+//             return req;
+//             // JSON parsing failed, return the original string
+//             // return req;
+//         }
+
+//     },
+
+
+
+
+
+
+    //decrypt user request
+    decryption: async (req) => {
+        if (req.body != undefined && Object.keys(req.body).length !== 0) {
+            var request = JSON.parse(CryptoJS.AES.decrypt(req.body, SECRET, { iv: IV }).toString(CryptoJS.enc.Utf8))
+            request.language = req.language;
+         
+            if (req.headers['type'] == 'admin') {
+                request.admin_id = req.admin_id
+            } else {
+                request.user_id = req.user_id
+            }
+            return request;
+        }
+        else {
+            return {}
+        }
     },
 
+    //encrypt user request
+    encryption: async (data) => {
+        try {
+            return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
+        } catch (error) {
+            return ''
+        }
+    },
+
+    //encrypt plain data
+    encryptPlain: function (data) {
+        try {
+            return CryptoJS.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
+        } catch (e) {
+            return '';
+        }
+    },
+
+    //decrypt plain data
+    decryptPlain: function (data) {
+        try {
+            return JSON.parse(CryptoJS.AES.decrypt(data, SECRET, { iv: IV }).toString(CryptoJS.enc.Utf8));
+        } catch (error) {
+            return CryptoJS.AES.decrypt(data, SECRET, { iv: IV }).toString(CryptoJS.enc.Utf8);
+        }
+    },
+
+
+    // -------------------------------------------------------- EncDec in apicall --------------------------------------------------------
     encryptiondemo: (req, res) => {
         try {
-            let data = headerValidator.isJson(req);
-            const encryptedData = crypto.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
-            console.log('encryptedData: ', encryptedData);
+            let data = common.isJson(req);
+            const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
             res.json(encryptedData);
-
         } catch (error) {
             return '';
         }
     },
 
     decryptiondemo: async (req, res) => {
+        console.log('req=================',req)
+        
         try {
-            const decryptedData = JSON.parse(crypto.AES.decrypt(req, SECRET, { iv: IV }).toString(crypto.enc.Utf8));
-            let data = headerValidator.isJson(decryptedData);
+            const decryptedData = JSON.parse(CryptoJS.AES.decrypt(req, SECRET, { iv: IV }).toString(CryptoJS.enc.Utf8));
+            let data = common.isJson(decryptedData);
             res.json(data);
         } catch (error) {
+            console.log('erroir',error)
+            
             return {};
         }
 
