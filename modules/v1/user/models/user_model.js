@@ -26,8 +26,6 @@ const userModel = {
         const encPass = await middleware.encryption(req.password);
 
         const token = randtoken.generate(64, "0123456789abcdefghijklnmopqrstuvwxyz");
-
- 
         const existingUser = await UserSchema.findOne({ 'device_info.token': token });
 
         if (existingUser) {
@@ -65,7 +63,6 @@ const userModel = {
          
             return middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_success_message, response);
         } catch (error) {
-            console.log('getting error here@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ===>', error);
             return middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_adduserdata_error_message, error);
         }
     },
