@@ -252,7 +252,7 @@ const headerValidator = {
     encryptiondemo: (req, res) => {
         try {
             let data = common.isJson(req);
-            const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString(CryptoJS.enc.Utf8);
+            const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
             res.json(encryptedData);
         } catch (error) {
             return '';
