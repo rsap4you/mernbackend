@@ -4,10 +4,10 @@ const middleware = require("../../../../middleware/headerValidator");
 const validationRules = require('../user_validation_rules');
 
 const register = async (req, res) => {
-    console.log('req@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@: ', req.language);
+
     const request = await middleware.decryption(req);
     console.log('request: ', request);
-    // const request = req.body;
+
     const valid = await middleware.checkValidationRules(request, validationRules.sigupValidation)
 
     if (valid.status) {
