@@ -26,6 +26,7 @@ const userModel = {
         const encPass = await middleware.encryption(req.password);
 
         const token = randtoken.generate(64, "0123456789abcdefghijklnmopqrstuvwxyz");
+
         const existingUser = await UserSchema.findOne({ 'device_info.token': token });
 
         if (existingUser) {
@@ -44,7 +45,6 @@ const userModel = {
             last_name:  (req.last_name != undefined || req.last_name != null) ? req.last_name : "",
             email: (req.email != undefined || req.email != null) ? req.email : "",
             mobile_number:(req.mobile_number != undefined || req.mobile_number != null) ? req.mobile_number : "",
-            // password: encPass,
             password: (req.password != undefined || req.password != null) ? req.encPass : "",
             otp_code: (req.otp_code != undefined || req.otp_code != null) ? req.otp_code : "",
             is_verify: (req.is_verify != undefined || req.is_verify != null) ? req.is_verify : "0",
@@ -225,15 +225,10 @@ const userModel = {
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_success_message   , null);
     },
     
-    // addUpdatePoints
     async addUpdatePoints(req, res) {
-        console.log('req=======================================================>: ', req);
-
         try {
             let points = req.points;
-    
             let existingDocument = await PointSchema.findOne({ _id: req.user_id });
-    
             if (existingDocument) {
                 let update_status = await PointSchema.updateOne(
                     { user_id: req.user_id },
@@ -241,11 +236,18 @@ const userModel = {
                 );
     
                 if (update_status.modifiedCount > 0) {
+                    
+                    let updatededPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
+                    console.log('updatedPoints: ', updatededPoints);
+
                     return await middleware.sendResponse(
                         res,
                         Codes.SUCCESS,
                         lang[req.language].rest_keywords_success_message || "Document updated successfully",
-                        null
+                        {
+                            points: updatededPoints.points,
+                        
+                        }
                     );
                 } else {
                     return await middleware.sendResponse(
@@ -260,18 +262,25 @@ const userModel = {
                     user_id: req.user_id,
                     points: points,
                 });
-    
+                
                 await newDocument.save();
-    
+                
+                // Retrieve the saved document
+                let updatedPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
+                console.log('updatedPoints: ', updatedPoints);
+                
                 return await middleware.sendResponse(
                     res,
                     Codes.SUCCESS,
                     lang[req.language].rest_keywords_success_message || "Document inserted successfully",
-                    null
+                    {
+                        points: updatedPoints.points, // Include points in the response
+                    
+                    }
                 );
+                
             }
         } catch (error) {
-        
             return await middleware.sendResponse(
                 res,
                 Codes.ERROR,
