@@ -20,7 +20,6 @@ const common = {
     },
 
     // function for check unique mobile number
-
     async checkUniqueMobile(mobile_number) {
         try {
             const user = await userSchema.findOne({ mobile_number: mobile_number });
@@ -59,7 +58,6 @@ const common = {
         }
 
     },
-
 
     async getdetails(key, data) {
         return new Promise((resolve, reject) => {

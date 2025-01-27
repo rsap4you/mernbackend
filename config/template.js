@@ -48,3 +48,5 @@ exports.forgetPasswordTemplate = async (result) => {
 	</html>`;
 	return template
   };
+
+  

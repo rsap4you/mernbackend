@@ -102,6 +102,22 @@ const active_inactive = async (req, res) => {
     }
 }
 
+// addUpdatePoints
+const addUpdatePoints = async (req, res) => {
+    // console.log('req--------------------------------------------------->',req);
+    console.log('active_inactive',req.body);
+
+    const request = await middleware.decryption(req);
+
+    const valid = await middleware.checkValidationRules(request, validationRules.active_inactiveValidation)
+
+    if (valid.status) {
+        return userModel.addUpdatePoints(request, res)
+    } else {
+        return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
+    }
+}
+
 // ******************************************************Active inactive ***************************************
 
 
@@ -151,5 +167,6 @@ module.exports = {
     updatePassword,
     userList,
     editUser,active_inactive,
-    deleteuser
+    deleteuser,
+    addUpdatePoints
 }

@@ -3,12 +3,12 @@ const common = require("../../../../config/common");
 const lang = require("../../../../config/language");
 const Codes = require("../../../../config/status_codes");
 const UserSchema = require("../../../schema/user_schema");
-
-
 const middleware = require("../../../../middleware/headerValidator");
 const template = require("../../../../config/template");
 const redis = require("../../../../config/redis");
 const { log } = require('winston');
+
+const PointSchema = require("../../../schema/Point_schema");
 
 const userModel = {
 
@@ -225,8 +225,62 @@ const userModel = {
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_success_message   , null);
     },
     
-    // ************************************active inactive user *****************************
+    // addUpdatePoints
+    async addUpdatePoints(req, res) {
+        try {
+            let points = req.points;
+    
+            let existingDocument = await PointSchema.findOne({ _id: req.userId });
+    
+            if (existingDocument) {
+                let update_status = await PointSchema.updateOne(
+                    { _id: req.userId },
+                    { $set: { points: points } }
+                );
+    
+                if (update_status.modifiedCount > 0) {
+                    return await middleware.sendResponse(
+                        res,
+                        Codes.SUCCESS,
+                        lang[req.language].rest_keywords_success_message || "Document updated successfully",
+                        null
+                    );
+                } else {
+                    return await middleware.sendResponse(
+                        res,
+                        Codes.ERROR,
+                        lang[req.language].rest_keywords_err_message || "Failed to update document",
+                        null
+                    );
+                }
+            } else {
+                let newDocument = new PointSchema({
+                    _id: req.userId,
+                    points: points,
+                });
+    
+                await newDocument.save();
+    
+                return await middleware.sendResponse(
+                    res,
+                    Codes.SUCCESS,
+                    lang[req.language].rest_keywords_insert_success_message || "Document inserted successfully",
+                    null
+                );
+            }
+        } catch (error) {
+            console.error("Error in addUpdatePoints:", error);
+            return await middleware.sendResponse(
+                res,
+                Codes.ERROR,
+                lang[req.language].rest_keywords_err_message || "An error occurred",
+                null
+            );
+        }
+    },
+    
 
+    // ************************************active inactive user *****************************
 
 
     // ************************************Delete user *****************************
@@ -281,6 +335,10 @@ const userModel = {
         let userData = await UserSchema.findOne({ _id: user_id });
         return userData;
     }
+
+
+
+
 }
 
 module.exports = userModel;

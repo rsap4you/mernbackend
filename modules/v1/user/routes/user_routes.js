@@ -24,6 +24,10 @@ router.post('/deleteuser', userController.deleteuser);
 
 router.post('/active_inactive', userController.active_inactive); 
 
+
+router.post('/add_update_points', userController.addUpdatePoints); 
+
+
 router.post("/encryption_demo", async (req, res) => {
     console.log("s");
     middleware.encryptiondemo(req.body, res);
