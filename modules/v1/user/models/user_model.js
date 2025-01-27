@@ -227,15 +227,16 @@ const userModel = {
     
     // addUpdatePoints
     async addUpdatePoints(req, res) {
+        console.log('req=======================================================>: ', req);
 
         try {
             let points = req.points;
     
-            let existingDocument = await PointSchema.findOne({ _id: req.userId });
+            let existingDocument = await PointSchema.findOne({ _id: req.user_id });
     
             if (existingDocument) {
                 let update_status = await PointSchema.updateOne(
-                    { _id: req.userId },
+                    { user_id: req.user_id },
                     { $set: { points: points } }
                 );
     
@@ -256,7 +257,7 @@ const userModel = {
                 }
             } else {
                 let newDocument = new PointSchema({
-                    _id: req.userId,
+                    user_id: req.user_id,
                     points: points,
                 });
     
