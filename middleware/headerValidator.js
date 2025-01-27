@@ -12,7 +12,7 @@ const UserSchema = require("../modules/schema/user_schema");
 const SECRET = crypto.enc.Utf8.parse(process.env.KEY);
 const IV = crypto.enc.Utf8.parse(process.env.IV);
 
-const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-user-otp", "otp-verification", "register", "login", "update-password","add_update_points");
+const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-user-otp", "otp-verification", "register", "login", "update-password");
 
 const bypassHeaderKey = new Array("encryption_demo", "decryption_demo", "sendnotification", "resetpasswordForm", "resetPass");
 
@@ -58,17 +58,21 @@ const headerValidator = {
 
     // Function to validate the token of any user before every request
     validateHeaderToken: async (req, res, next) => {
+       
         try {
             const headerToken = (req.headers.token !== undefined && req.headers.token !== '') ? req.headers.token : '';
             const pathData = req.path.split("/");
 
             if (bypassMethod.indexOf(pathData[2]) === -1) {
                 if (headerToken !== '') {
+              
+                    
                     try {
                         let token = crypto.AES.decrypt(headerToken, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
                         token = token.replace(/"/g, '');
                    
                         const userDetails = await UserSchema.findOne({ "device_info.token": token })
+                     
                         if (userDetails !== null && userDetails !== undefined) {
                             req.user_id = userDetails.id;
                             next();
@@ -82,6 +86,7 @@ const headerValidator = {
                     return headerValidator.sendResponse(res, Codes.UNAUTHORIZED, lang[req.language].rest_keywords_token_notvalid_message, null);
                 }
             } else {
+
 
                 next();
             }

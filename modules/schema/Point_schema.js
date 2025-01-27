@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const postSchema = mongoose.Schema({
     user_id: {
         type: Schema.Types.ObjectId,
-        required: true
+    
     },
     points: {
         type: Number,
@@ -30,7 +30,6 @@ const postSchema = mongoose.Schema({
 
 const postModel = mongoose.model('tbl_point', postSchema, 'tbl_point');
 module.exports = postModel;
-
 
 
 

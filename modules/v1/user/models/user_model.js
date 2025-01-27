@@ -227,6 +227,7 @@ const userModel = {
     
     // addUpdatePoints
     async addUpdatePoints(req, res) {
+
         try {
             let points = req.points;
     
@@ -264,12 +265,12 @@ const userModel = {
                 return await middleware.sendResponse(
                     res,
                     Codes.SUCCESS,
-                    lang[req.language].rest_keywords_insert_success_message || "Document inserted successfully",
+                    lang[req.language].rest_keywords_success_message || "Document inserted successfully",
                     null
                 );
             }
         } catch (error) {
-            console.error("Error in addUpdatePoints:", error);
+        
             return await middleware.sendResponse(
                 res,
                 Codes.ERROR,
