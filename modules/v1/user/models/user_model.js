@@ -226,6 +226,7 @@ const userModel = {
     },
     
     async addUpdatePoints(req, res) {
+        console.log('req==========================================================>>>>>>>>>>>>: ', req);
         try {
             let points = req.points;
             let existingDocument = await PointSchema.findOne({ user_id: req.user_id });
