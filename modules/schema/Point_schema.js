@@ -30,3 +30,7 @@ const postSchema = mongoose.Schema({
 
 const postModel = mongoose.model('tbl_point', postSchema, 'tbl_point');
 module.exports = postModel;
+
+
+
+

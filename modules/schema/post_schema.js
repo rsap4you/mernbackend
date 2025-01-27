@@ -28,5 +28,6 @@ const postSchema = mongoose.Schema({
     updated_at: { type: Date, default: Date.now }
 });
 
+
 const homeModel = mongoose.model('tbl_point', postSchema, 'tbl_post');
 module.exports = homeModel;
