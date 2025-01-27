@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const postSchema = mongoose.Schema({
+const postSchema = new Schema({
     user_id: {
         type: Schema.Types.ObjectId,
         required: true
@@ -11,7 +11,6 @@ const postSchema = mongoose.Schema({
         required: true,
         default: 0
     },
-
     is_active: {
         type: String,
         description: "0 : inActive, 1 : Active",
@@ -28,6 +27,5 @@ const postSchema = mongoose.Schema({
     updated_at: { type: Date, default: Date.now }
 });
 
-
-const homeModel = mongoose.model('tbl_point', postSchema, 'tbl_post');
+const homeModel = mongoose.models.tbl_point || mongoose.model('tbl_post', postSchema, 'tbl_post');
 module.exports = homeModel;
