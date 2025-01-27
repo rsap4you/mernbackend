@@ -2,6 +2,7 @@ const express = require('express')
 const middleware = require("../../../../middleware/headerValidator")
 
 const router = express.Router()
+
 const userController = require('../controller/user_controllers');
 
 router.post('/register', userController.register);
@@ -23,8 +24,6 @@ router.post('/edituser', userController.editUser);
 router.post('/deleteuser', userController.deleteuser);
 
 router.post('/active_inactive', userController.active_inactive); 
-
-
 router.post('/add_update_points', userController.addUpdatePoints); 
 
 

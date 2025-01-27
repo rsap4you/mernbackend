@@ -13,7 +13,7 @@ const UserSchema = require("../modules/schema/user_schema");
 const SECRET = crypto.enc.Utf8.parse(process.env.KEY);
 const IV = crypto.enc.Utf8.parse(process.env.IV);
 
-const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-user-otp", "otp-verification", "register", "login", "update-password");
+const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-user-otp", "otp-verification", "register", "login", "update-password","add_update_points");
 
 
 const bypassHeaderKey = new Array("encryption_demo", "decryption_demo", "sendnotification", "resetpasswordForm", "resetPass");
