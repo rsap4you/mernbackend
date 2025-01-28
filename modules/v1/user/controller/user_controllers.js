@@ -105,9 +105,9 @@ const active_inactive = async (req, res) => {
 // addUpdatePoints
 const addUpdatePoints = async (req, res) => {
     // console.log('req--------------------------------------------------->',req);
-    console.log('active_inactive',req.body);
-
+    
     const request = await middleware.decryption(req);
+    console.log('addUpdatePoints============================================>',request);
 
     const valid = await middleware.checkValidationRules(request, validationRules.active_inactiveValidation)
 

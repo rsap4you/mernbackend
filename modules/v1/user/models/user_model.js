@@ -54,7 +54,7 @@ const userModel = {
         let OTP = Math.floor(1000 + Math.random() * 9000);
         user.otp_code = OTP;
 
-        const newUser = new UserSchema(user);``
+        const newUser = new UserSchema(user);
 
         try {
             await newUser.validate();
@@ -247,7 +247,7 @@ const userModel = {
                         
                         }
                     );
-                    
+
                 } else {
                     return await middleware.sendResponse(
                         res,
@@ -288,7 +288,6 @@ const userModel = {
         }
     },
     
-
     // ************************************active inactive user *****************************
 
 
@@ -344,8 +343,6 @@ const userModel = {
         let userData = await UserSchema.findOne({ _id: user_id });
         return userData;
     }
-
-
 
 
 }
