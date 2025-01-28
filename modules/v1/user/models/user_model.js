@@ -13,8 +13,7 @@ const PointSchema = require("../../../schema/Point_schema");
 const userModel = {
 
     async register(req, res) {
-       console.log('languageee',req.language);
-       
+
         const checkEmailUnique = await common.checkUniqueEmail(req);
         if (checkEmailUnique) {
             return await middleware.sendResponse(res, Codes.ALREADY, lang[req.language].rest_keywords_unique_email_error, null)
@@ -206,8 +205,9 @@ const userModel = {
     // ************************************active inactive user *****************************
 
     async active_inactive(req, res) {
-        // Assuming req.body.is_active contains the status (1 or 0)
+
         let status = req.is_active;
+
         let updateFields = {
             "is_active": status,
         };
@@ -217,7 +217,6 @@ const userModel = {
             { $set: updateFields }
         );
  
-    
         if (update_status.modifiedCount <= 0) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
@@ -226,11 +225,9 @@ const userModel = {
     },
     
     async addUpdatePoints(req, res) {
-        console.log('req==========================================================>>>>>>>>>>>>: ', req);
         try {
             let points = req.points;
             let existingDocument = await PointSchema.findOne({ user_id: req.user_id });
-            console.log('existingDocument: ', existingDocument);
             if (existingDocument) {
                 let update_status = await PointSchema.updateOne(
                     { user_id: req.user_id },
@@ -240,7 +237,6 @@ const userModel = {
                 if (update_status.modifiedCount > 0) {
 
                     let updatededPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
-                    console.log('updatedPoints: ', updatededPoints);
 
                     return await middleware.sendResponse(
                         res,
@@ -251,6 +247,7 @@ const userModel = {
                         
                         }
                     );
+                    
                 } else {
                     return await middleware.sendResponse(
                         res,
@@ -268,7 +265,7 @@ const userModel = {
                 await newDocument.save();
 
                 let updatedPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
-                    
+
                 return await middleware.sendResponse(
                     res,
                     Codes.SUCCESS,

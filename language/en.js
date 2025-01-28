@@ -51,8 +51,7 @@ const message = {
     'rest_keywords_unique_mobilenumber_error': "Hey User! This mobile number is already used",
     'rest_keywords_unique_username_error': "Hey User! This username is already used",
     'rest_keywords_user_not_registered_error': "Hello User! You are not registered with this email, Please enter correct email",
-
-
+    
     'rest_keywords_exist_email_error': "Hey User! This email is already exist",
     'rest_keywords_exist_mobilenumber_error': "Hey User! This mobile number is already exist",
 
