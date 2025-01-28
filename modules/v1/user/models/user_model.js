@@ -224,31 +224,109 @@ const userModel = {
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_success_message   , null);
     },
     
+    // async addUpdatePoints(req, res) {
+    //     try {
+    //         let points = req.points;
+    //         let existingDocument = await PointSchema.findOne({ user_id: req.user_id });
+            
+    //         if (existingDocument) {
+                
+
+    //             const pointsUpdate = existingDocument.points + points;
+
+
+    //             existingDocument.points = pointsUpdate;
+    //             await existingDocument.save(); 
+    //             let update_status = await PointSchema.updateOne(
+    //                 { user_id: req.user_id },
+    //                 { $set: { points: pointsUpdate } }
+    //             );
+    
+    //             if (update_status.modifiedCount > 0) {
+
+    //                 let updatededPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
+
+    //                 return await middleware.sendResponse(
+    //                     res,
+    //                     Codes.SUCCESS,
+    //                     lang[req.language].rest_keywords_success_message || "Document updated successfully",
+    //                     {
+    //                         points: updatededPoints.points,
+                        
+    //                     }
+    //                 );
+
+    //             } else {
+    //                 return await middleware.sendResponse(
+    //                     res,
+    //                     Codes.ERROR,
+    //                     lang[req.language].rest_keywords_err_message || "Failed to update document",
+    //                     null
+    //                 );
+    //             }
+    //         } else {
+    //             let newDocument = new PointSchema({
+    //                 user_id: req.user_id,
+    //                 points: points,
+    //             });
+                
+    //             await newDocument.save();
+
+    //             let updatedPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
+
+    //             return await middleware.sendResponse(
+    //                 res,
+    //                 Codes.SUCCESS,
+    //                 lang[req.language].rest_keywords_success_message || "Document inserted successfully",
+    //                 {
+    //                     points: updatedPoints.points, 
+
+                    
+    //                 }
+
+                    
+    //             );
+                
+    //         }
+    //     } catch (error) {
+    //         return await middleware.sendResponse(
+    //             res,
+    //             Codes.ERROR,
+    //             lang[req.language].rest_keywords_err_message || "An error occurred",
+    //             null
+    //         );
+    //     }
+    // },
+
+
     async addUpdatePoints(req, res) {
         try {
-            let points = req.points;
+            let points = req.points; 
             let existingDocument = await PointSchema.findOne({ user_id: req.user_id });
-            console.log('existingDocument ================>>>>>>>>>>>>>>>: ', existingDocument);
+    
             if (existingDocument) {
+      
+                const pointsUpdate = points === 0 ? 0 : existingDocument.points + points;
+    
+                existingDocument.points = pointsUpdate;
+                await existingDocument.save();
+    
                 let update_status = await PointSchema.updateOne(
                     { user_id: req.user_id },
-                    { $set: { points: points } }
+                    { $set: { points: pointsUpdate } }
                 );
     
                 if (update_status.modifiedCount > 0) {
-
                     let updatededPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
-
+    
                     return await middleware.sendResponse(
                         res,
                         Codes.SUCCESS,
                         lang[req.language].rest_keywords_success_message || "Document updated successfully",
                         {
                             points: updatededPoints.points,
-                        
                         }
                     );
-
                 } else {
                     return await middleware.sendResponse(
                         res,
@@ -258,28 +336,24 @@ const userModel = {
                     );
                 }
             } else {
+                // If no existing document, handle as a new insertion
                 let newDocument = new PointSchema({
                     user_id: req.user_id,
-                    points: points,
+                    points: points === 0 ? 0 : points,
                 });
-                
+    
                 await newDocument.save();
-
+    
                 let updatedPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
-
+    
                 return await middleware.sendResponse(
                     res,
                     Codes.SUCCESS,
                     lang[req.language].rest_keywords_success_message || "Document inserted successfully",
                     {
-                        points: updatedPoints.points, 
-
-                    
+                        points: updatedPoints.points,
                     }
-
-
                 );
-                
             }
         } catch (error) {
             return await middleware.sendResponse(
@@ -290,6 +364,7 @@ const userModel = {
             );
         }
     },
+    
     
     // ************************************active inactive user *****************************
 
