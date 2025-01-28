@@ -228,6 +228,7 @@ const userModel = {
         try {
             let points = req.points;
             let existingDocument = await PointSchema.findOne({ user_id: req.user_id });
+            console.log('existingDocument ================>>>>>>>>>>>>>>>: ', existingDocument);
             if (existingDocument) {
                 let update_status = await PointSchema.updateOne(
                     { user_id: req.user_id },
@@ -275,6 +276,8 @@ const userModel = {
 
                     
                     }
+
+
                 );
                 
             }
