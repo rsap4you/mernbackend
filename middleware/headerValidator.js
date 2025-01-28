@@ -65,8 +65,6 @@ const headerValidator = {
 
             if (bypassMethod.indexOf(pathData[2]) === -1) {
                 if (headerToken !== '') {
-              
-                    
                     try {
                         let token = crypto.AES.decrypt(headerToken, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
                         token = token.replace(/"/g, '');

@@ -266,17 +266,16 @@ const userModel = {
                 });
                 
                 await newDocument.save();
-                
-                // Retrieve the saved document
+
                 let updatedPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
-                console.log('updatedPoints: ', updatedPoints);
-                
+                    
                 return await middleware.sendResponse(
                     res,
                     Codes.SUCCESS,
                     lang[req.language].rest_keywords_success_message || "Document inserted successfully",
                     {
-                        points: updatedPoints.points, // Include points in the response
+                        points: updatedPoints.points, 
+
                     
                     }
                 );

@@ -19,7 +19,7 @@ exports.sendOtp = async(result) => {
               </div>
         </div>
     </body>
-    </html>`;
+    </html>`; 
     return template;
 }
 
