@@ -301,22 +301,32 @@ const userModel = {
 
     async addUpdatePoints(req, res) {
         try {
-            let points = req.points; 
+
+            let points = req.points;
+            if (isNaN(points)) {
+                return await middleware.sendResponse(
+                    res,
+                    Codes.ERROR,
+                    "Invalid points value. Points must be a number.",
+                    null
+                );
+            }
+    
+            points = Number(points); 
             let existingDocument = await PointSchema.findOne({ user_id: req.user_id });
     
             if (existingDocument) {
-      
-                const pointsUpdate = points === 0 ? 0 : existingDocument.points + points;
-    
+            
+                const pointsUpdate = points === 0 ? 0 : Number(existingDocument.points) + points;
+
                 existingDocument.points = pointsUpdate;
                 await existingDocument.save();
-    
+
                 let update_status = await PointSchema.updateOne(
-                    { user_id: req.user_id },
+                    { user_id: req.user_id }, 
                     { $set: { points: pointsUpdate } }
                 );
-    
-                if (update_status.modifiedCount > 0) {
+          
                     let updatededPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
     
                     return await middleware.sendResponse(
@@ -327,16 +337,8 @@ const userModel = {
                             points: updatededPoints.points,
                         }
                     );
-                } else {
-                    return await middleware.sendResponse(
-                        res,
-                        Codes.ERROR,
-                        lang[req.language].rest_keywords_err_message || "Failed to update document",
-                        null
-                    );
-                }
+           
             } else {
-                // If no existing document, handle as a new insertion
                 let newDocument = new PointSchema({
                     user_id: req.user_id,
                     points: points === 0 ? 0 : points,
@@ -356,6 +358,8 @@ const userModel = {
                 );
             }
         } catch (error) {
+            console.error("Error in addUpdatePoints: ", error);
+    
             return await middleware.sendResponse(
                 res,
                 Codes.ERROR,
