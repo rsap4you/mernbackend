@@ -29,3 +29,4 @@ const postSchema = new Schema({
 
 const homeModel = mongoose.models.tbl_point || mongoose.model('tbl_post', postSchema, 'tbl_post');
 module.exports = homeModel;
+

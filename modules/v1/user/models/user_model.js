@@ -8,6 +8,7 @@ const template = require("../../../../config/template");
 const redis = require("../../../../config/redis");
 const { log } = require('winston');
 
+const mongoose = require("mongoose");
 const PointSchema = require("../../../schema/Point_schema");
 
 const userModel = {
@@ -223,81 +224,6 @@ const userModel = {
     
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_success_message   , null);
     },
-    
-    // async addUpdatePoints(req, res) {
-    //     try {
-    //         let points = req.points;
-    //         let existingDocument = await PointSchema.findOne({ user_id: req.user_id });
-            
-    //         if (existingDocument) {
-                
-
-    //             const pointsUpdate = existingDocument.points + points;
-
-
-    //             existingDocument.points = pointsUpdate;
-    //             await existingDocument.save(); 
-    //             let update_status = await PointSchema.updateOne(
-    //                 { user_id: req.user_id },
-    //                 { $set: { points: pointsUpdate } }
-    //             );
-    
-    //             if (update_status.modifiedCount > 0) {
-
-    //                 let updatededPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
-
-    //                 return await middleware.sendResponse(
-    //                     res,
-    //                     Codes.SUCCESS,
-    //                     lang[req.language].rest_keywords_success_message || "Document updated successfully",
-    //                     {
-    //                         points: updatededPoints.points,
-                        
-    //                     }
-    //                 );
-
-    //             } else {
-    //                 return await middleware.sendResponse(
-    //                     res,
-    //                     Codes.ERROR,
-    //                     lang[req.language].rest_keywords_err_message || "Failed to update document",
-    //                     null
-    //                 );
-    //             }
-    //         } else {
-    //             let newDocument = new PointSchema({
-    //                 user_id: req.user_id,
-    //                 points: points,
-    //             });
-                
-    //             await newDocument.save();
-
-    //             let updatedPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
-
-    //             return await middleware.sendResponse(
-    //                 res,
-    //                 Codes.SUCCESS,
-    //                 lang[req.language].rest_keywords_success_message || "Document inserted successfully",
-    //                 {
-    //                     points: updatedPoints.points, 
-
-                    
-    //                 }
-
-                    
-    //             );
-                
-    //         }
-    //     } catch (error) {
-    //         return await middleware.sendResponse(
-    //             res,
-    //             Codes.ERROR,
-    //             lang[req.language].rest_keywords_err_message || "An error occurred",
-    //             null
-    //         );
-    //     }
-    // },
-
 
     async addUpdatePoints(req, res) {
         try {
@@ -368,6 +294,50 @@ const userModel = {
             );
         }
     },
+    
+    
+
+    async getPointsDetails(req, res) {
+        try {
+            const user_id = req.user_id; // Assuming user_id is extracted from the token
+    
+            const pointsDetails = await UserSchema.aggregate([
+                {
+                    $match: { _id: new mongoose.Types.ObjectId(user_id) }, // Use 'new' keyword here
+                },
+                {
+                    $lookup: {
+                        from: "tbl_point", // Collection name for tbl_point
+                        localField: "_id", // Field in tbl_user
+                        foreignField: "user_id", // Field in tbl_point referencing tbl_user
+                        as: "pointsDetails", // Alias for the joined data
+                    },
+                },
+                {
+                    $project: {
+                        first_name: 1, // Include first_name from tbl_user
+                        points: { $arrayElemAt: ["$pointsDetails.points", 0] }, // Include points from tbl_point
+                    },
+                },
+            ]);
+    
+            return await middleware.sendResponse(
+                res,
+                Codes.SUCCESS,
+                lang[req.language].rest_keywords_success_message || "Data fetched successfully",
+                pointsDetails
+            );
+        } catch (error) {
+            console.error(error);
+            return await middleware.sendResponse(
+                res,
+                Codes.ERROR,
+                lang[req.language].rest_keywords_err_message || "An error occurred",
+                null
+            );
+        }
+    }
+    ,
     
     
     // ************************************active inactive user *****************************

@@ -118,6 +118,21 @@ const addUpdatePoints = async (req, res) => {
     }
 }
 
+const getPointsDetails = async (req, res) => {
+    // console.log('req--------------------------------------------------->',req);
+    
+    const request = await middleware.decryption(req);
+    console.log('addUpdatePoints============================================>',request);
+
+    const valid = await middleware.checkValidationRules(request, validationRules.active_inactiveValidation)
+
+    if (valid.status) {
+        return userModel.getPointsDetails(request, res)
+    } else {
+        return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
+    }
+}
+
 // ******************************************************Active inactive ***************************************
 
 
@@ -168,5 +183,6 @@ module.exports = {
     userList,
     editUser,active_inactive,
     deleteuser,
-    addUpdatePoints
+    addUpdatePoints,
+    getPointsDetails
 }
