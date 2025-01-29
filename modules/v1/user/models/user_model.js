@@ -297,6 +297,48 @@ const userModel = {
     
     
 
+    // async getPointsDetails(req, res) {
+    //     try {
+    //         const user_id = req.user_id; // Assuming user_id is extracted from the token
+    
+    //         const pointsDetails = await UserSchema.aggregate([
+    //             {
+    //                 $match: { _id: new mongoose.Types.ObjectId(user_id) }, // Use 'new' keyword here
+    //             },
+    //             {
+    //                 $lookup: {
+    //                     from: "tbl_point", // Collection name for tbl_point
+    //                     localField: "_id", // Field in tbl_user
+    //                     foreignField: "user_id", // Field in tbl_point referencing tbl_user
+    //                     as: "pointsDetails", // Alias for the joined data
+    //                 },
+    //             },
+    //             {
+    //                 $project: {
+    //                     first_name: 1, // Include first_name from tbl_user
+    //                     points: { $arrayElemAt: ["$pointsDetails.points", 0] }, // Include points from tbl_point
+    //                 },
+    //             },
+    //         ]);
+    
+    //         return await middleware.sendResponse(
+    //             res,
+    //             Codes.SUCCESS,
+    //             lang[req.language].rest_keywords_success_message || "Data fetched successfully",
+    //             pointsDetails
+    //         );
+    //     } catch (error) {
+    //         console.error(error);
+    //         return await middleware.sendResponse(
+    //             res,
+    //             Codes.ERROR,
+    //             lang[req.language].rest_keywords_err_message || "An error occurred",
+    //             null
+    //         );
+    //     }
+    // }
+
+
     async getPointsDetails(req, res) {
         try {
             const user_id = req.user_id; // Assuming user_id is extracted from the token
@@ -314,18 +356,27 @@ const userModel = {
                     },
                 },
                 {
+                    $unwind: {
+                        path: "$pointsDetails", // Unwind the pointsDetails array
+                        preserveNullAndEmptyArrays: true, // Keeps users with no points
+                    },
+                },
+                {
                     $project: {
                         first_name: 1, // Include first_name from tbl_user
-                        points: { $arrayElemAt: ["$pointsDetails.points", 0] }, // Include points from tbl_point
+                        points: "$pointsDetails.points", // Include points from tbl_point
                     },
                 },
             ]);
+    
+            // Since $unwind ensures it's no longer an array, we can directly access the first element
+            const result = pointsDetails[0] || {};
     
             return await middleware.sendResponse(
                 res,
                 Codes.SUCCESS,
                 lang[req.language].rest_keywords_success_message || "Data fetched successfully",
-                pointsDetails
+                result
             );
         } catch (error) {
             console.error(error);
@@ -336,8 +387,7 @@ const userModel = {
                 null
             );
         }
-    }
-    ,
+    },
     
     
     // ************************************active inactive user *****************************
