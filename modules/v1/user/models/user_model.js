@@ -225,7 +225,7 @@ const userModel = {
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_success_message   , null);
     },
 
-    async addUpdatePoints(req, res) {
+    async addUpdatePoints(req, res) {                                                                                                                                                                          
         try {
 
             let points = req.points;
@@ -294,7 +294,6 @@ const userModel = {
             );
         }
     },
-    
     
 
     // async getPointsDetails(req, res) {
@@ -389,8 +388,9 @@ const userModel = {
         }
     },
     
-    
-    // ************************************active inactive user *****************************
+
+    // ************************************active inactive user *********************
+    // ********
 
 
     // ************************************Delete user *****************************
@@ -440,6 +440,68 @@ const userModel = {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
     },
+
+    async userListById(req, res) {
+        console.log('req: ', req);
+        try {
+     
+          if (!mongoose.Types.ObjectId.isValid(req.user_id)) {
+            return await middleware.sendResponse(
+              res,
+              Codes.ERROR,
+              "Invalid user ID",
+              null
+            );
+          }
+    
+          const userDetails = await UserSchema.aggregate([
+            {
+              $match: {
+                is_deleted: { $ne: true }, 
+                _id: new mongoose.Types.ObjectId(req.user_id),
+              },
+            },
+            {
+              $lookup: {
+                from: "tbl_point", 
+                localField: "_id", 
+                foreignField: "user_id",
+                as: "pointdetails", 
+              },
+            },
+            {
+              $addFields: {
+                totalPoints: { $sum: "$pointdetails.points" }, 
+              },
+            },
+          ]);
+    
+          console.log('userDetails: ', userDetails);
+          if (userDetails.length > 0) {
+            return await middleware.sendResponse(
+              res,
+              Codes.SUCCESS,
+              lang[req.language].rest_keywords_success_message,
+              userDetails[0] 
+            );
+          } else {
+            return await middleware.sendResponse(
+              res,
+              Codes.NOT_FOUND,
+              lang[req.language].rest_keywords_no_data_message,
+              null
+            );
+          }
+        } catch (error) {
+          console.error("Error in userListById:", error);
+          return await middleware.sendResponse(
+            res,
+            Codes.ERROR,
+            lang[req.language].rest_keywords_err_message,
+            null
+          );
+        }
+      },
     
     async getuserData(user_id) {
         let userData = await UserSchema.findOne({ _id: user_id });

@@ -19,6 +19,8 @@ router.post('/logout', userController.logout);
 
 router.post('/userlist', userController.userList);
 
+router.post('/userlist_by_id', userController.userListById);
+
 router.post('/edituser', userController.editUser);
 
 router.post('/deleteuser', userController.deleteuser);

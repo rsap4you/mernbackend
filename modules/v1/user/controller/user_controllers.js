@@ -167,6 +167,18 @@ const userList = async (req, res) => {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
 }
+const userListById = async (req, res) => {
+    const request = await middleware.decryption(req);
+    // console.log('request: ', request);
+
+    const valid = await middleware.checkValidationRules(request, validationRules.userlistValidation)
+
+    if (valid.status) {
+        return userModel.userListById(request, res)
+    } else {
+        return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
+    }
+}
 
 const logout = async (req, res) => {
     return userModel.logout(req, res)
@@ -184,5 +196,6 @@ module.exports = {
     editUser,active_inactive,
     deleteuser,
     addUpdatePoints,
-    getPointsDetails
+    getPointsDetails,
+    userListById
 }
