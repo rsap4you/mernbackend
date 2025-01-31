@@ -7,6 +7,7 @@ const Codes = require('../config/status_codes');
 const UserSchema = require("../modules/schema/user_schema");
 
 const shakey = CryptLib.getHashSha256(process.env.KEY, 32);
+
 // methods that do not check token
 const bypassMethod = new Array("resend-user-otp", "otp-verification", "register", "login", "update-password");
 
@@ -89,7 +90,6 @@ const headerValidator = {
         return false;
     },
 
-    // Decrypt user request
     decryption: async (req) => {
         try {
             if (req !== undefined && Object.keys(req).length !== 0) {

@@ -473,10 +473,10 @@ const userModel = {
               $addFields: {
                 totalPoints: { $sum: "$pointdetails.points" }, 
               },
+              
             },
           ]);
     
-          console.log('userDetails: ', userDetails);
           if (userDetails.length > 0) {
             return await middleware.sendResponse(
               res,
@@ -493,7 +493,7 @@ const userModel = {
             );
           }
         } catch (error) {
-          console.error("Error in userListById:", error);
+
           return await middleware.sendResponse(
             res,
             Codes.ERROR,

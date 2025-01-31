@@ -74,7 +74,6 @@ const editUser = async (req, res) => {
     const request = await middleware.decryption(req);
 
     // console.log('request: =======================>', request);
-
     const valid = await middleware.checkValidationRules(request, validationRules.editUserValidation)
 
     if (valid.status) {
@@ -102,21 +101,8 @@ const active_inactive = async (req, res) => {
     }
 }
 
-// addUpdatePoints
-const addUpdatePoints = async (req, res) => {
-    // console.log('req--------------------------------------------------->',req);
-    
-    const request = await middleware.decryption(req);
-    console.log('addUpdatePoints============================================>',request);
 
-    const valid = await middleware.checkValidationRules(request, validationRules.active_inactiveValidation)
 
-    if (valid.status) {
-        return userModel.addUpdatePoints(request, res)
-    } else {
-        return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
-    }
-}
 
 const getPointsDetails = async (req, res) => {
     // console.log('req--------------------------------------------------->',req);
