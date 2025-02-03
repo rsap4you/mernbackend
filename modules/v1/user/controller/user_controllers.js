@@ -57,7 +57,6 @@ console.log('log mila controller me ',request);
 
 const updatePassword = async (req, res) => {
     const request = await middleware.decryption(req);
-    // console.log('request: ', request);
 
     const valid = await middleware.checkValidationRules(request, validationRules.updatePasswordValidation)
 
@@ -66,6 +65,7 @@ const updatePassword = async (req, res) => {
     } else {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
+
 }
 
 // ---------------------------------------------------Edit User--------------------------------------------------------
@@ -101,11 +101,21 @@ const active_inactive = async (req, res) => {
     }
 }
 
+const addUpdatePoints = async (req, res) => {
+    
+    const request = await middleware.decryption(req);
+    console.log('addUpdatePoints============================================>',request);
 
+    const valid = await middleware.checkValidationRules(request, validationRules.addpointsValidation)
 
+    if (valid.status) {
+        return userModel.addUpdatePoints(request, res)
+    } else {
+        return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
+    }
+}
 
 const getPointsDetails = async (req, res) => {
-    // console.log('req--------------------------------------------------->',req);
     
     const request = await middleware.decryption(req);
     console.log('addUpdatePoints============================================>',request);
@@ -153,6 +163,7 @@ const userList = async (req, res) => {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
 }
+
 const userListById = async (req, res) => {
     const request = await middleware.decryption(req);
     // console.log('request: ', request);

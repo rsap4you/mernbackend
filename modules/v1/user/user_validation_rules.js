@@ -38,6 +38,9 @@ const checkValidatorRules = {
     active_inactiveValidation: {
       
     } ,
+    addpointsValidation: {
+      
+    } ,
     deleteUserValidation: {
       
     } ,

@@ -1,7 +1,5 @@
 const Validator = require('Validator');
-
 const crypto = require('crypto-js')
-
 const lang = require("../config/language");
 const logger = require('../logger');
 const Codes = require('../config/status_codes');
@@ -17,6 +15,7 @@ const bypassMethod = new Array("encryption_demo", "decryption_demo", "resend-use
 const bypassHeaderKey = new Array("encryption_demo", "decryption_demo", "sendnotification", "resetpasswordForm", "resetPass");
 
 const headerValidator = {
+
     extractHeaderLanguage: async (req, res, next) => {
         try {
             const language = (req.headers['accept-language'] !== undefined && req.headers['accept-language'] !== '') ? (req.headers['accept-language'] === 'en-GB,en-US;q=0.9,en;q=0.8' ? 'en' : req.headers['accept-language']) : 'en';
@@ -27,6 +26,7 @@ const headerValidator = {
         }
 
     },
+
     validateHeaderApiKey: async (req, res, next) => {
    
         try {
@@ -94,52 +94,27 @@ const headerValidator = {
         return false;
     },
 
-  // Decrypt user request
-//   decryption: async (req) => {
-//     console.log('req.language',req.language);
+    decryption: async (req) => {
+        
+        try {
     
-//     try {
-//         let data1 ;
-        
-        
-//         const decryptedData = await crypto.AES.decrypt(req.body, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
-        
-//         let data = headerValidator.isJson(decryptedData);
-//         console.log('data: ', data);
-        
-//         data1.language = req.language
-//         data.user_id = req.user_id
-//         // console.log('data1: ', data1.language);
-//         console.log('data1: ', data1);
-//         return data;
-//     } catch (error) {
-//         console.log('error: ', error);
-//         return {};
-//     }
-// },
-
-
-decryption: async (req) => {
-
-
-    try {
-  
-        let data1 = {};
-        
-        const decryptedData = await crypto.AES.decrypt(req.body, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
-        let data = headerValidator.isJson(decryptedData);
-        data1 = { ...data }; 
-        data1.language = req.language; 
-        data1.user_id = req.user_id;
-        return data1;
-    } catch (error) {
-        console.log('error: ', error);
-        return {};
-    }
-},
+            let data1 = {};
+            
+            const decryptedData = await crypto.AES.decrypt(req.body, SECRET, { iv: IV }).toString(crypto.enc.Utf8);
+            let data = headerValidator.isJson(decryptedData);
+            data1 = { ...data }; 
+            data1.language = req.language; 
+            data1.user_id = req.user_id;
+            return data1;
+        } catch (error) {
+            console.log('error: ', error);
+            return {};
+        }
+    },
 
     // Encrypt user request
     encryption: async (req) => {
+
         try {
             let data = headerValidator.isJson(req);
             const encryptedData = crypto.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
@@ -150,7 +125,6 @@ decryption: async (req) => {
             return {};
         }  
 
-        
     },
 
     encryptiondemo: (req, res) => {
@@ -178,6 +152,7 @@ decryption: async (req) => {
     
     // check req data is json or string
     isJson: (req) => {
+
         try {
             const parsedObject = JSON.parse(req);
             return parsedObject;
@@ -234,4 +209,4 @@ decryption: async (req) => {
     },
 
 }
-module.exports = headerValidator
+module.exports = headerValidator ;
