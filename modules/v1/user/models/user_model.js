@@ -312,6 +312,7 @@ const userModel = {
                     lang[req.language].rest_keywords_success_message || "Document updated successfully",
                     {
                         points: updatedPoints.points,
+                        scratch_point: new_coupon_code,  
                     }
                 );
             } else {
