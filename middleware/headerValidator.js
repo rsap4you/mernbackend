@@ -7,6 +7,7 @@ const UserSchema = require("../modules/schema/user_schema");
 
 // const SECRET = crypto.enc.Hex.parse(process.env.KEY);
 // const IV = crypto.enc.Hex.parse(process.env.IV);
+
 const SECRET = crypto.enc.Utf8.parse(process.env.KEY);
 const IV = crypto.enc.Utf8.parse(process.env.IV);
 
@@ -121,7 +122,6 @@ const headerValidator = {
             return encryptedData;
 
         } catch (error) {
-            console.log('error: ', error);
             return {};
         }  
 
@@ -131,7 +131,6 @@ const headerValidator = {
         try {
             let data = headerValidator.isJson(req);
             const encryptedData = crypto.AES.encrypt(JSON.stringify(data), SECRET, { iv: IV }).toString();
-            console.log('encryptedData: ', encryptedData);
             res.json(encryptedData);
 
         } catch (error) {
@@ -146,26 +145,25 @@ const headerValidator = {
             res.json(data);
         } catch (error) {
             return {};
+            
         }
 
     },
     
-    // check req data is json or string
     isJson: (req) => {
 
         try {
             const parsedObject = JSON.parse(req);
             return parsedObject;
-            // return parsedObject;
+
         } catch (error) {
             return req;
-            // JSON parsing failed, return the original string
-            // return req;
+     
         }
 
     },
     
-    // function for send Response
+
     sendResponse: async (res, resCode, msgKey, resData) => {
         try {
             const responsejson =

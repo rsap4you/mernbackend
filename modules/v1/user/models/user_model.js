@@ -125,20 +125,6 @@ const userModel = {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_password_notvalid_message, null);
         }
 
-        // if (userData.is_verify == "0") {
-        //     let OTP = Math.floor(1000 + Math.random() * 9000);
-        //     let upd_params = {
-        //         otp_code: OTP
-        //     }
-        //     const filter = { _id: userData._id };
-        //     const update = { $set: upd_params };
-        //     let update_user = await UserSchema.updateOne(filter, update);
-        //     if (update_user.modifiedCount <= 0) {
-        //         return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
-        //     }
-        //     return await middleware.sendResponse(res, Codes.UNAUTHORIZED, lang[req.language].rest_keywords_sendotp_success_message, upd_params);
-        // }
-
         const token = randtoken.generate(64, "0123456789abcdefghijklnmopqrstuvwxyz");
         let update_token = await UserSchema.updateOne(
             { _id: userData.id },
@@ -167,6 +153,7 @@ const userModel = {
         let upd_params = {
             password: new_password
         }
+
         const filter = { _id: userData._id };
         const update = { $set: upd_params };
         let update_pass = await UserSchema.updateOne(filter, update);
@@ -285,7 +272,6 @@ const userModel = {
                 );
             }
         } catch (error) {
-            console.error("Error in addUpdatePoints: ", error);
     
             return await middleware.sendResponse(
                 res,
@@ -297,6 +283,67 @@ const userModel = {
     },
     
 
+    async addUpdatescratchCard(req, res) {
+        try {
+         
+            let existingDocument = await PointSchema.findOne({ user_id: req.user_id });
+            console.log('existingDocument: ', existingDocument);
+    
+            if (existingDocument) {
+
+                // Generate a new coupon code
+                const randomThreeDigit = Math.floor(100 + Math.random() * 900); 
+                console.log('randomThreeDigit: ', randomThreeDigit);
+                const new_coupon_code = randomThreeDigit;
+
+                const updatedPointed = existingDocument.points + new_coupon_code;
+                console.log('updatedPointed: ', updatedPointed);
+
+                await PointSchema.updateOne(
+                    { user_id: req.user_id },
+                    { $set: { points: updatedPointed } }
+                );
+    
+                let updatedPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
+    
+                return middleware.sendResponse(
+                    res,
+                    Codes.SUCCESS,
+                    lang[req.language].rest_keywords_success_message || "Document updated successfully",
+                    {
+                        points: updatedPoints.points,
+                    }
+                );
+            } else {
+                let newDocument = new PointSchema({
+                    user_id: req.user_id,
+                    points: 0, 
+                });
+    
+                await newDocument.save();
+    
+                let updatedPoints = await PointSchema.findOne({ user_id: req.user_id }).lean();
+    
+                return middleware.sendResponse(
+                    res,
+                    Codes.SUCCESS,
+                    lang[req.language].rest_keywords_success_message || "Document inserted successfully",
+                    {
+                        points: updatedPoints.points,
+                    }
+                );
+            }
+        } catch (error) {
+            console.error(error);
+            return middleware.sendResponse(
+                res,
+                Codes.ERROR,
+                lang[req.language].rest_keywords_err_message || "An error occurred",
+                null
+            );
+        }
+    },
+    
     // async getPointsDetails(req, res) {
     //     try {
     //         const user_id = req.user_id; // Assuming user_id is extracted from the token
@@ -337,7 +384,6 @@ const userModel = {
     //         );
     //     }
     // }
-
 
     async getPointsDetails(req, res) {
         try {
@@ -394,19 +440,17 @@ const userModel = {
 
     // ************************************Delete user *****************************
     
-    async deleteuser(req, res) {
 
+    async deleteuser(req, res) {
         let updateFields = {
             "is_deleted": 1,
             "is_active":0,
 
         };
-
         let update_status = await UserSchema.updateOne(
             { _id: req },
             { $set: updateFields }
         );
-
 
         if (update_status.modifiedCount <= 0) {
             return await middleware.sendResponse(res, Codes.ERROR, 'error ', null);
@@ -418,6 +462,8 @@ const userModel = {
     // ************************************Delete user *****************************
 
     async logout(req, res) {
+
+        
         let update_token = await UserSchema.updateOne(
             { _id: req.user_id },
             { $set: { "device_info.token": "" } }
@@ -500,7 +546,7 @@ const userModel = {
             null
           );
         }
-      },
+     },
     
     async getuserData(user_id) {
         let userData = await UserSchema.findOne({ _id: user_id });

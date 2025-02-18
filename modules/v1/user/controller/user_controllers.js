@@ -73,11 +73,9 @@ const updatePassword = async (req, res) => {
 const editUser = async (req, res) => {
     const request = await middleware.decryption(req);
 
-    // console.log('request: =======================>', request);
     const valid = await middleware.checkValidationRules(request, validationRules.editUserValidation)
 
     if (valid.status) {
-        // console.log('sadfshdfsfdghdg',request);
         return userModel.editUser(request, res)
     } else {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
@@ -86,11 +84,8 @@ const editUser = async (req, res) => {
 
 // ******************************************************Active inactive ***************************************
 const active_inactive = async (req, res) => {
-    // console.log('req--------------------------------------------------->',req);
-    console.log('active_inactive',req.body);
-
+    
     const request = await middleware.decryption(req);
-    console.log('request mila controller me      byamaaamamamama : ', request);
 
     const valid = await middleware.checkValidationRules(request, validationRules.active_inactiveValidation)
 
@@ -104,8 +99,6 @@ const active_inactive = async (req, res) => {
 const addUpdatePoints = async (req, res) => {
     
     const request = await middleware.decryption(req);
-    console.log('addUpdatePoints============================================>',request);
-
     const valid = await middleware.checkValidationRules(request, validationRules.addpointsValidation)
 
     if (valid.status) {
@@ -115,11 +108,20 @@ const addUpdatePoints = async (req, res) => {
     }
 }
 
+const addUpdatescratchCard = async (req, res) => {
+    
+    const request = await middleware.decryption(req);
+    const valid = await middleware.checkValidationRules(request, validationRules.addpointsValidation)
+
+    if (valid.status) {
+        return userModel.addUpdatescratchCard(request, res)
+    } else {
+        return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
+    }
+}
 const getPointsDetails = async (req, res) => {
     
     const request = await middleware.decryption(req);
-    console.log('addUpdatePoints============================================>',request);
-
     const valid = await middleware.checkValidationRules(request, validationRules.active_inactiveValidation)
 
     if (valid.status) {
@@ -194,5 +196,6 @@ module.exports = {
     deleteuser,
     addUpdatePoints,
     getPointsDetails,
-    userListById
+    userListById,
+    addUpdatescratchCard
 }
