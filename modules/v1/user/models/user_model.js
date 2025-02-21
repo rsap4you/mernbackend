@@ -443,43 +443,44 @@ const userModel = {
     },
 
     async userListById(req, res) {
-        console.log('req: ', req);
         try {
-     
-          if (!mongoose.Types.ObjectId.isValid(req.user_id)) {
-            return await middleware.sendResponse(
-              res,
-              Codes.ERROR,
-              "Invalid user ID",
-              null
-            );
-          }
+            console.log('Request received:', req.body || req.params || req.query);
     
-          if (userDetails.length > 0) {
-            return await middleware.sendResponse(
-              res,
-              Codes.SUCCESS,
-              lang[req.language].rest_keywords_success_message,
-              userDetails[0] 
-            );
-          } else {
-            return await middleware.sendResponse(
-              res,
-              Codes.NOT_FOUND,
-              lang[req.language].rest_keywords_no_data_message,
-              null
-            );
-          }
+            const userId = req.user_id; // Ensure you are fetching it from the correct place, e.g., req.params.user_id
+    
+            if (!mongoose.Types.ObjectId.isValid(userId)) {
+                return middleware.sendResponse(res, Codes.ERROR, "Invalid user ID", null);
+            }
+    
+            const userDetails = await UserSchema.findOne({ _id: userId, is_deleted: "0" });
+    
+            if (userDetails) {
+                return middleware.sendResponse(
+                    res,
+                    Codes.SUCCESS,
+                    lang[req.language].rest_keywords_success_message,
+                    userDetails
+                );
+            } else {
+                return middleware.sendResponse(
+                    res,
+                    Codes.NOT_FOUND,
+                    lang[req.language].rest_keywords_no_data_message,
+                    null
+                );
+            }
         } catch (error) {
-
-          return await middleware.sendResponse(
-            res,
-            Codes.ERROR,
-            lang[req.language].rest_keywords_err_message,
-            null
-          );
+            console.error('Error fetching user details:', error);
+    
+            return middleware.sendResponse(
+                res,
+                Codes.ERROR,
+                lang[req.language].rest_keywords_err_message,
+                null
+            );
         }
-     },
+    },
+    
     
     async getuserData(user_id) {
         let userData = await UserSchema.findOne({ _id: user_id });
