@@ -428,7 +428,7 @@ const userModel = {
                 return middleware.sendResponse(res, Codes.ERROR, "Invalid user ID", null);
             }
     
-            // const userDetails = await UserSchema.findOne({ _id: userId, is_deleted: "0" });
+        
             const userDetails = await UserSchema.aggregate([
                 {
                   $match: {
@@ -438,10 +438,15 @@ const userModel = {
                 },
                 {
                   $lookup: {
-                    from: "tbl_point",
+                    from: "tbl_point", // Ensure the collection name is correct
                     localField: "_id",
                     foreignField: "user_id",
-                    as: "pointsdeatils"
+                    as: "pointdetails"
+                  }
+                },
+                {
+                  $addFields: {
+                    totalPoints: { $sum: "$pointdetails.points" } // Calculate total points
                   }
                 }
               ]);
