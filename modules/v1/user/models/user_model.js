@@ -517,14 +517,16 @@ const userModel = {
                     lang[req.language].rest_keywords_no_data_message,
                     null
                 );
+            }else{
+
+                return middleware.sendResponse(
+                    res,
+                    Codes.SUCCESS,
+                    lang[req.language].rest_keywords_success_message,
+                   null
+                );
             }
     
-            return middleware.sendResponse(
-                res,
-                Codes.SUCCESS,
-                lang[req.language].rest_keywords_success_message,
-               null
-            );
         } catch (error) {
             console.error(error);
             return middleware.sendResponse(
