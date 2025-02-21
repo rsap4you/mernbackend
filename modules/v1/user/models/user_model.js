@@ -495,6 +495,7 @@ const userModel = {
                 mobile_number:req.mobile_number,
                 email:req.email,
             };
+            console.log('updateData: ', updateData);
     
             const updatedUser = await UserSchema.findOneAndUpdate(
                 { _id: req.user_id }, 
@@ -504,7 +505,7 @@ const userModel = {
             console.log('updatedUser: ', updatedUser);
             
     
-            if (!updatedUser.affectedrow) {
+            if (!updatedUser) {
                 return middleware.sendResponse(
                     res,
                     Codes.NOT_FOUND,
