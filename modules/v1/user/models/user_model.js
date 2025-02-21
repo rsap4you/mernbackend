@@ -446,12 +446,11 @@ const userModel = {
                 },
                 {
                   $addFields: {
-                    totalPoints: { $sum: "$pointdetails.points" } // Calculate total points
+                    totalPoints: { $sum: "$pointdetails.points" } 
                   }
                 }
               ]);
-              
-    
+            
             if (userDetails) {
                 return middleware.sendResponse(
                     res,
@@ -484,7 +483,58 @@ const userModel = {
     async getuserData(user_id) {
         let userData = await UserSchema.findOne({ _id: user_id });
         return userData;
-    }
+    },
+
+    async editUser(req, res) {
+        try {
+            console.log("req===============================================###########################>>>>>>>>>>",req)
+
+            let updateData = {
+                first_name:req.first_name,
+                country_code:req.country_code,
+                mobile_number:req.mobile_number,
+                email:req.email,
+            };
+     
+
+            // const updatedUser = await UserSchema.findByIdAndUpdate(
+            //     req.user_id,
+            //     { $set: updateData },
+            //     { new: true } 
+            // );
+
+            const updatedUser = await UserSchema.findOneAndUpdate(
+                { _id: req.user_id }, 
+                { $set: updateData },
+                { new: true } 
+            );
+            
+    
+            if (!updatedUser) {
+                return middleware.sendResponse(
+                    res,
+                    Codes.NOT_FOUND,
+                    lang[req.language].rest_keywords_no_data_message,
+                    null
+                );
+            }
+    
+            return middleware.sendResponse(
+                res,
+                Codes.SUCCESS,
+                lang[req.language].rest_keywords_success_message,
+               null
+            );
+        } catch (error) {
+            console.error(error);
+            return middleware.sendResponse(
+                res,
+                Codes.ERROR,
+                lang[req.language].rest_keywords_err_message,
+                null
+            );
+        }
+    },
 
 
 }

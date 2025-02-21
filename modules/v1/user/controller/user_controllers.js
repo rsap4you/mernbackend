@@ -82,6 +82,7 @@ const editUser = async (req, res) => {
     }
 }
 
+
 // ******************************************************Active inactive ***************************************
 const active_inactive = async (req, res) => {
     
@@ -199,5 +200,6 @@ module.exports = {
     addUpdatePoints,
     getPointsDetails,
     userListById,
-    addUpdatescratchCard
+    addUpdatescratchCard,
+
 }
