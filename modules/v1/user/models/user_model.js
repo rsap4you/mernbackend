@@ -93,24 +93,17 @@ const userModel = {
     },
 
     async resend_user_otp(req, res) {
-        
         const userData = await UserSchema.findOne({ $and: [{ mobile: req.mobile }, { is_active: "1" }, { is_deleted: "0" }] });
-       
         if (!userData) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
         }
-
         let OTP = Math.floor(1000 + Math.random() * 9000);
-
         let upd_params = {
             otp_code: OTP
         }
-
         const filter = { _id: userData._id };
         const update = { $set: upd_params };
-
         let update_user = await UserSchema.updateOne(filter, update);
-
         if (update_user.modifiedCount <= 0) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
@@ -120,23 +113,6 @@ const userModel = {
 
     async login(req, res) {
         const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_deleted: "0" }] });
-        // const userData = await UserSchema.findOne({
-        //     $and: [
-        //       { is_deleted: "0" },
-        //       {
-        //         $and: [
-        //           { email: req.email },
-        //           { 
-        //             $or: [
-        //               { country_code: req.country_code },
-        //               { mobile: req.mobile }
-        //             ]
-        //           }
-        //         ]
-        //       }
-        //     ]
-        //   });
-          
     
         if (!userData) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
@@ -397,13 +373,14 @@ const userModel = {
 
     // ************************************Delete user *****************************
     
-    async deleteuser(req, res) {
 
+
+    async deleteuser(req, res) {
         let updateFields = {
             "is_deleted": 1,
             "is_active":0,
-        };
 
+        };
         let update_status = await UserSchema.updateOne(
             { _id: req },
             { $set: updateFields }
@@ -444,7 +421,6 @@ const userModel = {
 
     async userListById(req, res) {
         try {
-            console.log('Request received:', req.body || req.params || req.query);
     
             const userId = req.user_id; 
     
@@ -452,8 +428,24 @@ const userModel = {
                 return middleware.sendResponse(res, Codes.ERROR, "Invalid user ID", null);
             }
     
-            const userDetails = await UserSchema.findOne({ _id: userId, is_deleted: "0" });
-            console.log('userDetails: ', userDetails);
+            // const userDetails = await UserSchema.findOne({ _id: userId, is_deleted: "0" });
+            const userDetails = await UserSchema.aggregate([
+                {
+                  $match: {
+                    _id: new mongoose.Types.ObjectId(userId),
+                    is_deleted: "0"
+                  }
+                },
+                {
+                  $lookup: {
+                    from: "tbl_point",
+                    localField: "_id",
+                    foreignField: "user_id",
+                    as: "points"
+                  }
+                }
+              ]);
+              
     
             if (userDetails) {
                 return middleware.sendResponse(
@@ -463,7 +455,6 @@ const userModel = {
                     userDetails
                 );
             } else {
-                console.log('errrrrrr');
                 
                 return middleware.sendResponse(
                     res,
