@@ -72,6 +72,7 @@ const updatePassword = async (req, res) => {
 
 const editUser = async (req, res) => {
     const request = await middleware.decryption(req);
+    console.log('request: ', request);
 
     const valid = await middleware.checkValidationRules(request, validationRules.editUserValidation)
 
