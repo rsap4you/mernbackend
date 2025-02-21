@@ -93,17 +93,24 @@ const userModel = {
     },
 
     async resend_user_otp(req, res) {
+        
         const userData = await UserSchema.findOne({ $and: [{ mobile: req.mobile }, { is_active: "1" }, { is_deleted: "0" }] });
+       
         if (!userData) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
         }
+
         let OTP = Math.floor(1000 + Math.random() * 9000);
+
         let upd_params = {
             otp_code: OTP
         }
+
         const filter = { _id: userData._id };
         const update = { $set: upd_params };
+
         let update_user = await UserSchema.updateOne(filter, update);
+
         if (update_user.modifiedCount <= 0) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
@@ -112,7 +119,24 @@ const userModel = {
     },
 
     async login(req, res) {
-        const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_deleted: "0" }] });
+        // const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_deleted: "0" }] });
+        const userData = await UserSchema.findOne({
+            $and: [
+              { is_deleted: "0" },
+              {
+                $and: [
+                  { email: req.email },
+                  { 
+                    $or: [
+                      { country_code: req.country_code },
+                      { mobile: req.mobile }
+                    ]
+                  }
+                ]
+              }
+            ]
+          });
+          
     
         if (!userData) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
@@ -161,34 +185,6 @@ const userModel = {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_password_change_success_message, null);
-    },
-
-    async editUser(req, res) {
-
-        const userData = await UserSchema.findOne({ _id: { _id: req._id } });
-
-        if (!userData) {
-            return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
-        }
-        if (userData.is_active == '0') {
-            return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_isactive_error_message, null);
-        }
-
-        let upd_params = {
-            _id:req._id,
-            first_name: req.first_name,
-            last_name: req.last_name,
-            email: req.email,
-            mobile_number: req.mobile_number
-        }
-
-        const filter = { _id: userData._id };
-        const update = { $set: upd_params };
-        let update_pass = await UserSchema.updateOne(filter, update);
-        if (update_pass.modifiedCount <= 0) {
-            return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
-        }
-        return await middleware.sendResponse(res, Codes.SUCCESS, 'success', null);
     },
 
     // ************************************active inactive user *****************************
@@ -291,9 +287,9 @@ const userModel = {
     
             if (existingDocument) {
 
-                // Generate a new coupon code
                 const randomThreeDigit = Math.floor(10 + Math.random() * 90); 
                 console.log('randomThreeDigit: ', randomThreeDigit);
+                
                 const new_coupon_code = randomThreeDigit;
 
                 const updatedPointed = existingDocument.points + new_coupon_code;
@@ -309,7 +305,7 @@ const userModel = {
                 return middleware.sendResponse(
                     res,
                     Codes.SUCCESS,
-                    lang[req.language].rest_keywords_success_message || "Document updated successfully",
+                    lang[req.language].rest_keywords_success_message || "Document updated successfully !",
                     {
                         points: updatedPoints.points,
                         scratch_point: new_coupon_code,  
@@ -395,19 +391,19 @@ const userModel = {
             );
         }
     },
-
+    
     // ************************************active inactive user *********************
 
 
     // ************************************Delete user *****************************
     
-
     async deleteuser(req, res) {
+
         let updateFields = {
             "is_deleted": 1,
             "is_active":0,
-
         };
+
         let update_status = await UserSchema.updateOne(
             { _id: req },
             { $set: updateFields }
@@ -424,7 +420,6 @@ const userModel = {
 
     async logout(req, res) {
 
-        
         let update_token = await UserSchema.updateOne(
             { _id: req.user_id },
             { $set: { "device_info.token": "" } }
@@ -459,29 +454,6 @@ const userModel = {
               null
             );
           }
-    
-          const userDetails = await UserSchema.aggregate([
-            {
-              $match: {
-                is_deleted: { $ne: true }, 
-                _id: new mongoose.Types.ObjectId(req.user_id),
-              },
-            },
-            {
-              $lookup: {
-                from: "tbl_point", 
-                localField: "_id", 
-                foreignField: "user_id",
-                as: "pointdetails", 
-              },
-            },
-            {
-              $addFields: {
-                totalPoints: { $sum: "$pointdetails.points" }, 
-              },
-              
-            },
-          ]);
     
           if (userDetails.length > 0) {
             return await middleware.sendResponse(

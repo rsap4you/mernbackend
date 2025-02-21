@@ -30,6 +30,7 @@ router.post('/active_inactive', userController.active_inactive);
 router.post('/add_update_points', userController.addUpdatePoints); 
 
 router.post('/get_points_details', userController.getPointsDetails); 
+
 router.post('/add_scratch_card', userController.addUpdatescratchCard); 
 
 

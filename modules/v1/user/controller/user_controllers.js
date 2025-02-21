@@ -119,6 +119,7 @@ const addUpdatescratchCard = async (req, res) => {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
 }
+
 const getPointsDetails = async (req, res) => {
     
     const request = await middleware.decryption(req);
@@ -177,6 +178,7 @@ const userListById = async (req, res) => {
     } else {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
+    
 }
 
 const logout = async (req, res) => {
