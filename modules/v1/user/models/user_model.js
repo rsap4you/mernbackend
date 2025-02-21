@@ -487,22 +487,14 @@ const userModel = {
 
     async editUser(req, res) {
         try {
-            console.log("req===============================================###########################>>>>>>>>>>",req)
-
+        
             let updateData = {
                 first_name:req.first_name,
                 country_code:req.country_code,
                 mobile_number:req.mobile_number,
                 email:req.email,
             };
-     
-
-            // const updatedUser = await UserSchema.findByIdAndUpdate(
-            //     req.user_id,
-            //     { $set: updateData },
-            //     { new: true } 
-            // );
-
+    
             const updatedUser = await UserSchema.findOneAndUpdate(
                 { _id: req.user_id }, 
                 { $set: updateData },
