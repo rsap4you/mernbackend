@@ -446,13 +446,14 @@ const userModel = {
         try {
             console.log('Request received:', req.body || req.params || req.query);
     
-            const userId = req.user_id; // Ensure you are fetching it from the correct place, e.g., req.params.user_id
+            const userId = req.user_id; 
     
             if (!mongoose.Types.ObjectId.isValid(userId)) {
                 return middleware.sendResponse(res, Codes.ERROR, "Invalid user ID", null);
             }
     
             const userDetails = await UserSchema.findOne({ _id: userId, is_deleted: "0" });
+            console.log('userDetails: ', userDetails);
     
             if (userDetails) {
                 return middleware.sendResponse(
@@ -462,6 +463,8 @@ const userModel = {
                     userDetails
                 );
             } else {
+                console.log('errrrrrr');
+                
                 return middleware.sendResponse(
                     res,
                     Codes.NOT_FOUND,
