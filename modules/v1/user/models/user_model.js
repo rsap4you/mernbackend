@@ -119,23 +119,23 @@ const userModel = {
     },
 
     async login(req, res) {
-        // const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_deleted: "0" }] });
-        const userData = await UserSchema.findOne({
-            $and: [
-              { is_deleted: "0" },
-              {
-                $and: [
-                  { email: req.email },
-                  { 
-                    $or: [
-                      { country_code: req.country_code },
-                      { mobile: req.mobile }
-                    ]
-                  }
-                ]
-              }
-            ]
-          });
+        const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_deleted: "0" }] });
+        // const userData = await UserSchema.findOne({
+        //     $and: [
+        //       { is_deleted: "0" },
+        //       {
+        //         $and: [
+        //           { email: req.email },
+        //           { 
+        //             $or: [
+        //               { country_code: req.country_code },
+        //               { mobile: req.mobile }
+        //             ]
+        //           }
+        //         ]
+        //       }
+        //     ]
+        //   });
           
     
         if (!userData) {
