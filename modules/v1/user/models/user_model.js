@@ -45,6 +45,7 @@ const userModel = {
             first_name:  (req.first_name != undefined || req.first_name != null ) ? req.first_name : "",
             last_name:  (req.last_name != undefined || req.last_name != null) ? req.last_name : "",
             email: (req.email != undefined || req.email != null) ? req.email : "",
+             
             mobile_number:(req.mobile_number != undefined || req.mobile_number != null) ? req.mobile_number : "",
             password: (req.password != undefined || req.password != null) ? req.encPass : "",
             otp_code: (req.otp_code != undefined || req.otp_code != null) ? req.otp_code : "",
@@ -500,9 +501,10 @@ const userModel = {
                 { $set: updateData },
                 { new: true } 
             );
+            console.log('updatedUser: ', updatedUser);
             
     
-            if (!updatedUser) {
+            if (!updatedUser.affectedrow) {
                 return middleware.sendResponse(
                     res,
                     Codes.NOT_FOUND,
