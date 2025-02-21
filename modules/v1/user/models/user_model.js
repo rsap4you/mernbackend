@@ -457,7 +457,7 @@ const userModel = {
                     res,
                     Codes.SUCCESS,
                     lang[req.language].rest_keywords_success_message,
-                    userDetails
+                    userDetails[0]
                 );
             } else {
                 
