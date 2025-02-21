@@ -441,7 +441,7 @@ const userModel = {
                     from: "tbl_point",
                     localField: "_id",
                     foreignField: "user_id",
-                    as: "points"
+                    as: "pointsdeatils"
                   }
                 }
               ]);
