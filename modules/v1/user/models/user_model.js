@@ -3,6 +3,7 @@ const common = require("../../../../config/common");
 const lang = require("../../../../config/language");
 const Codes = require("../../../../config/status_codes");
 const UserSchema = require("../../../schema/user_schema");
+const contactSchema = require("../../../schema/Contact_schema");
 const middleware = require("../../../../middleware/headerValidator");
 const template = require("../../../../config/template");
 const redis = require("../../../../config/redis");
@@ -41,11 +42,11 @@ const userModel = {
             device_token: (req.device_token !== undefined) ? req.device_token : "1234",
         };
 
+
         let user = {
             first_name:  (req.first_name != undefined || req.first_name != null ) ? req.first_name : "",
             last_name:  (req.last_name != undefined || req.last_name != null) ? req.last_name : "",
             email: (req.email != undefined || req.email != null) ? req.email : "",
-             
             mobile_number:(req.mobile_number != undefined || req.mobile_number != null) ? req.mobile_number : "",
             password: (req.password != undefined || req.password != null) ? req.encPass : "",
             otp_code: (req.otp_code != undefined || req.otp_code != null) ? req.otp_code : "",
@@ -178,7 +179,7 @@ const userModel = {
             { _id: req.userId },
             { $set: updateFields }
         );
- 
+     
         if (update_status.modifiedCount <= 0) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
@@ -320,6 +321,7 @@ const userModel = {
 
 
     async getPointsDetails(req, res) {
+        
         try {
             const user_id = req.user_id;
     
@@ -348,8 +350,7 @@ const userModel = {
                     },
                 },
             ]);
-    
-          
+
             const result = pointsDetails[0] || {};
     
             return await middleware.sendResponse(
@@ -358,6 +359,7 @@ const userModel = {
                 lang[req.language].rest_keywords_success_message || "Data fetched successfully",
                 result
             );
+
         } catch (error) {
             console.error(error);
             return await middleware.sendResponse(
@@ -419,6 +421,20 @@ const userModel = {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
     },
+
+    
+    async getContactDetails(req, res) {
+        const contactdetails = await contactSchema.find({ is_deleted: { $ne: 1 } });
+
+        if (contactdetails.length > 0) {
+
+            return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', {   ContactDetails: contactdetails });
+        } else {
+   
+            return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
+        }
+    },
+
 
     async userListById(req, res) {
         try {
@@ -504,7 +520,6 @@ const userModel = {
             );
             console.log('updatedUser: ', updatedUser);
             
-    
             if (!updatedUser) {
                 return middleware.sendResponse(
                     res,
@@ -512,6 +527,7 @@ const userModel = {
                     lang[req.language].rest_keywords_no_data_message,
                     null
                 );
+                 
             }else{
 
                 return middleware.sendResponse(

@@ -121,7 +121,17 @@ const addUpdatescratchCard = async (req, res) => {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
 }
+const getContactDetails = async (req, res) => {
+    
+    const request = await middleware.decryption(req);
+    const valid = await middleware.checkValidationRules(request, validationRules.addpointsValidation)
 
+    if (valid.status) {
+        return userModel.getContactDetails(request, res)
+    } else {
+        return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
+    }
+}
 const getPointsDetails = async (req, res) => {
     
     const request = await middleware.decryption(req);
@@ -202,5 +212,6 @@ module.exports = {
     getPointsDetails,
     userListById,
     addUpdatescratchCard,
+    getContactDetails
 
 }

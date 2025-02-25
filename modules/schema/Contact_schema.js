@@ -6,11 +6,32 @@ const contactSchema = mongoose.Schema({
         type: Schema.Types.ObjectId,
     
     },
-    full_name: {
-        type: string,
-        required: true,
-    },
-
+        icon_image: {
+          type: String,
+          required: true,
+        },
+        icon: {
+          type: String,
+          required: true,
+        },
+        title: {
+          type: String,
+          required: true,
+        },
+        detail: {
+          type: String,
+          required: true,
+        },
+        action: {
+          type: String,
+          required: true,
+        },
+        status: {
+          type: Number,
+          default: 1,
+          enum: [0, 1], 
+        },
+      
     is_active: {
         type: String,
         description: "0 : inActive, 1 : Active",
@@ -27,5 +48,5 @@ const contactSchema = mongoose.Schema({
     updated_at: { type: Date, default: Date.now }
 });
 
-const contactModel = mongoose.model('tbl_contact_us', postSchema, 'tbl_contact_us');
+const contactModel = mongoose.model('tbl_contact_us', contactSchema, 'tbl_contact_us');
 module.exports = contactModel;

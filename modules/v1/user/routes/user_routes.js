@@ -33,9 +33,9 @@ router.post('/get_points_details', userController.getPointsDetails);
 
 router.post('/add_scratch_card', userController.addUpdatescratchCard); 
 
+router.post('/get_contacts_details', userController.getContactDetails); 
 
 router.post("/encryption_demo", async (req, res) => {
-    console.log("s");
     middleware.encryptiondemo(req.body, res);
 });
 
