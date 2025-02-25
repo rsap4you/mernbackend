@@ -428,7 +428,7 @@ const userModel = {
 
         if (contactdetails.length > 0) {
 
-            return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', {   ContactDetails: contactdetails });
+            return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', contactdetails );
         } else {
    
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
