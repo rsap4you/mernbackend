@@ -4,6 +4,8 @@ const lang = require("../../../../config/language");
 const Codes = require("../../../../config/status_codes");
 const UserSchema = require("../../../schema/user_schema");
 const contactSchema = require("../../../schema/Contact_schema");
+const privacySchema = require("../../../schema/Privacy_schema");
+
 const middleware = require("../../../../middleware/headerValidator");
 const template = require("../../../../config/template");
 const redis = require("../../../../config/redis");
@@ -435,6 +437,19 @@ const userModel = {
         }
     },
 
+    // PrivacyPolicy
+    async PrivacyPolicy(req, res) {
+
+        const privacydetails = await privacySchema.find({ is_deleted: { $ne: 1 } });
+
+        if (privacydetails.length > 0) {
+
+            return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', privacydetails );
+        } else {
+   
+            return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
+        }
+    },
 
     async userListById(req, res) {
         try {

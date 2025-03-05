@@ -35,6 +35,12 @@ router.post('/add_scratch_card', userController.addUpdatescratchCard);
 
 router.post('/get_contacts_details', userController.getContactDetails); 
 
+router.post('/get_contacts_details', userController.getContactDetails); 
+                                                                    
+
+router.post('/privacy_policy', userController.PrivacyPolicy); 
+
+
 router.post("/encryption_demo", async (req, res) => {
     middleware.encryptiondemo(req.body, res);
 });
@@ -45,3 +51,6 @@ router.post("/decryption_demo", async (req, res) => {
 
 
 module.exports = router;
+
+
+// NZfXak3FsK7gL7Y75rpA
