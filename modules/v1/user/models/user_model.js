@@ -482,7 +482,7 @@ const userModel = {
                 }
               ]);
             
-            if (!userDetails) {
+            if (userDetails) {
                 return middleware.sendResponse(
                     res,
                     Codes.SUCCESS,
@@ -493,7 +493,7 @@ const userModel = {
                 
                 return middleware.sendResponse(
                     res,
-                    Codes.INTERNAL_ERROR,
+                    Codes.NOT_FOUND,
                     lang[req.language].rest_keywords_no_data_message,
                     null
                 );
