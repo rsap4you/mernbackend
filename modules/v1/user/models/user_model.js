@@ -493,7 +493,7 @@ const userModel = {
                 
                 return middleware.sendResponse(
                     res,
-                    Codes.NOT_FOUND,
+                    Codes.INTERNAL_ERROR,
                     lang[req.language].rest_keywords_no_data_message,
                     null
                 );
