@@ -482,7 +482,7 @@ const userModel = {
                 }
               ]);
             
-            if (userDetails != 2) {
+            if (!userDetails) {
                 return middleware.sendResponse(
                     res,
                     Codes.SUCCESS,
