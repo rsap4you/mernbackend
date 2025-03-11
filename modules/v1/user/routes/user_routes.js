@@ -37,6 +37,7 @@ router.post('/get_contacts_details', userController.getContactDetails);
 
 router.post('/get_contacts_details', userController.getContactDetails); 
 
+
 router.post('/privacy_policy', userController.PrivacyPolicy); 
 
 

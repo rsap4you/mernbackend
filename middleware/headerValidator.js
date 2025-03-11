@@ -113,7 +113,6 @@ const headerValidator = {
         }
     },
 
-    // Encrypt user request
     encryption: async (req) => {
 
         try {
@@ -162,7 +161,6 @@ const headerValidator = {
         }
 
     },
-    
 
     sendResponse: async (res, resCode, msgKey, resData) => {
         try {

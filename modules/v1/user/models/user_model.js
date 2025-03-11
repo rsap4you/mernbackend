@@ -381,11 +381,12 @@ const userModel = {
 
 
     async deleteuser(req, res) {
+      
         let updateFields = {
             "is_deleted": 1,
             "is_active":0,
-
         };
+
         let update_status = await UserSchema.updateOne(
             { _id: req },
             { $set: updateFields }
@@ -429,10 +430,8 @@ const userModel = {
         const contactdetails = await contactSchema.find({ is_deleted: { $ne: 1 } });
 
         if (contactdetails.length > 0) {
-
             return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', contactdetails );
         } else {
-   
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_err_message, null);
         }
     },
@@ -470,7 +469,7 @@ const userModel = {
                 },
                 {
                   $lookup: {
-                    from: "tbl_point", // Ensure the collection name is correct
+                    from: "tbl_point",
                     localField: "_id",
                     foreignField: "user_id",
                     as: "pointdetails"
@@ -483,7 +482,7 @@ const userModel = {
                 }
               ]);
             
-            if (userDetails) {
+            if (userDetails != 2) {
                 return middleware.sendResponse(
                     res,
                     Codes.SUCCESS,
