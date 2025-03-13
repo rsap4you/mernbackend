@@ -418,7 +418,6 @@ const userModel = {
         }
     },
 
-    
     async getContactDetails(req, res) {
 
         const contactdetails = await contactSchema.find({ is_deleted: { $ne: 1 } });
@@ -445,11 +444,10 @@ const userModel = {
     },
 
     async Redeem(req, res) {
+        console.log('req:===========================================/>>>>>>>>>>>>>> ', req);
         try {
     
             const newRedeem = new RedeemSchema({
-                email:req.email,
-                mobile_number :req.mobile_number,
                 points : req.points,
                 rupees :req.points / 100,
                 upi_id :req.upi_id,

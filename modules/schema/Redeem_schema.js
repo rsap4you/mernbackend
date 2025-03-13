@@ -8,19 +8,19 @@ const redeemSchema = mongoose.Schema({
     },
         email: {
           type: String,
-          required: true,
+
         },
         mobile_number: {
           type: String,
-          required: true,
+         
         },
         points: {
             type: String,
-            required: true,
+          
           },
           rupees: {
             type: String,
-            required: true,
+            
           },
           upi_id: {
             type: String,
