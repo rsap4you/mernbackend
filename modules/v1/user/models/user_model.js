@@ -478,9 +478,6 @@ const userModel = {
         return await middleware.sendResponse(res, Codes.NOT_FOUND, 'You are not eligible for withrawal for rupees.', null);
     }
 
-
-       
-
             const redeemdetails = await RedeemSchema.find({ 
                 is_deleted: { $ne: 1 }, 
                 user_id: req.user_id 
