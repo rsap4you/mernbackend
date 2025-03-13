@@ -443,17 +443,17 @@ const userModel = {
         }
     },
 
+
     async Redeem(req, res) {
-        console.log('req:===========================================/>>>>>>>>>>>>>> ', req);
         try {
-      // Check if user exists in tbl_user
+
       const userExists = await UserSchema.findOne({ _id: req.user_id });
       console.log('userExists: ', userExists);
    
       if (!userExists) {
           return await middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
       }
-      console.log('reqqqqqq====>',typeof(req.points))
+
     if(Number(req.points) === 2000){
         const newRedeem = new RedeemSchema({
             user_id:req.user_id,
@@ -473,17 +473,18 @@ const userModel = {
             { $set: { points: 0 } },  
             { new: true }  
         );
+        const redeemdetails = await RedeemSchema.find({ 
+            is_deleted: { $ne: 1 }, 
+            user_id: req.user_id 
+        });
+
+        return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', redeemdetails);
     }else{
         console.error("Error in Redeem function  2000000:")
         return await middleware.sendResponse(res, Codes.NOT_FOUND, 'You are not eligible for withrawal for rupees.', null);
     }
 
-            const redeemdetails = await RedeemSchema.find({ 
-                is_deleted: { $ne: 1 }, 
-                user_id: req.user_id 
-            });
-    
-            return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', redeemdetails);
+
         } catch (error) {
             console.error("Error in Redeem function:", error);
             return await middleware.sendResponse(res, Codes.ERROR, 'Something went wrong', null);
