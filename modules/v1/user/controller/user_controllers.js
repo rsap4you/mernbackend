@@ -144,6 +144,18 @@ const PrivacyPolicy = async (req, res) => {
         return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
     }
 }
+
+const Redeem = async (req, res) => {
+    
+    const request = await middleware.decryption(req);
+    const valid = await middleware.checkValidationRules(request, validationRules.addpointsValidation)
+
+    if (valid.status) {
+        return userModel.Redeem(request, res)
+    } else {
+        return middleware.sendResponse(res, Codes.VALIDATION_ERROR, valid.error, null);
+    }
+}
 const getPointsDetails = async (req, res) => {
     
     const request = await middleware.decryption(req);
@@ -225,6 +237,7 @@ module.exports = {
     userListById,
     addUpdatescratchCard,
     getContactDetails,
-    PrivacyPolicy
+    PrivacyPolicy,
+    Redeem
 
 }

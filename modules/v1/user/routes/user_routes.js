@@ -40,6 +40,7 @@ router.post('/get_contacts_details', userController.getContactDetails);
 
 router.post('/privacy_policy', userController.PrivacyPolicy); 
 
+router.post('/redeem', userController.Redeem); 
 
 router.post("/encryption_demo", async (req, res) => {
     middleware.encryptiondemo(req.body, res);

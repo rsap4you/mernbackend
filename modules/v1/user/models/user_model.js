@@ -5,6 +5,7 @@ const Codes = require("../../../../config/status_codes");
 const UserSchema = require("../../../schema/user_schema");
 const contactSchema = require("../../../schema/Contact_schema");
 const privacySchema = require("../../../schema/Privacy_schema");
+const RedeemSchema = require("../../../schema/Redeem_schema");
 
 const middleware = require("../../../../middleware/headerValidator");
 const template = require("../../../../config/template");
@@ -43,8 +44,6 @@ const userModel = {
             device_type: (req.device_type !== undefined) ? req.device_type : "A",
             device_token: (req.device_token !== undefined) ? req.device_token : "1234",
         };
-
-
         let user = {
             first_name:  (req.first_name != undefined || req.first_name != null ) ? req.first_name : "",
             last_name:  (req.last_name != undefined || req.last_name != null) ? req.last_name : "",
@@ -57,15 +56,11 @@ const userModel = {
             device_info: user_device
         };
 
-        let OTP = Math.floor(1000 + Math.random() * 9000);
-        user.otp_code = OTP;
-
         const newUser = new UserSchema(user);
 
         try {
             await newUser.validate();
             const response = await newUser.save();
-         
             return middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_success_message, response);
         } catch (error) {
             return middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_adduserdata_error_message, error);
@@ -73,6 +68,7 @@ const userModel = {
     },
 
     async otp_verification(req, res) {
+      
         const userData = await UserSchema.findOne({ $and: [{ email: req.email }, { is_active: "1" }, { is_deleted: "0" }] });
         if (!userData) {
             return await middleware.sendResponse(res, Codes.ERROR, lang[req.language].rest_keywords_userdatanotfound_message, null);
@@ -94,6 +90,7 @@ const userModel = {
         const response = await UserSchema.findOne({ $and: [{ email: req.email }, { is_active: "1" }, { is_deleted: "0" }] });
 
         return await middleware.sendResponse(res, Codes.SUCCESS, lang[req.language].rest_keywords_otpverified_success_message, response);
+
     },
 
     async resend_user_otp(req, res) {
@@ -258,7 +255,6 @@ const userModel = {
         }
     },
     
-
     async addUpdatescratchCard(req, res) {
         try {
          
@@ -321,7 +317,6 @@ const userModel = {
         }
     },
 
-
     async getPointsDetails(req, res) {
         
         try {
@@ -378,8 +373,6 @@ const userModel = {
 
     // ************************************Delete user *****************************
     
-
-
     async deleteuser(req, res) {
       
         let updateFields = {
@@ -427,6 +420,7 @@ const userModel = {
 
     
     async getContactDetails(req, res) {
+
         const contactdetails = await contactSchema.find({ is_deleted: { $ne: 1 } });
 
         if (contactdetails.length > 0) {
@@ -450,6 +444,37 @@ const userModel = {
         }
     },
 
+    async Redeem(req, res) {
+        try {
+    
+            const newRedeem = new RedeemSchema({
+                email:req.email,
+                mobile_number :req.mobile_number,
+                points : req.points,
+                rupees :req.points / 100,
+                upi_id :req.upi_id,
+
+            });
+    
+            await newRedeem.save();
+
+            await tbl_points.findOneAndUpdate(
+                { user_id: req.user_id },  
+                { $set: { points: 0 } },  
+                { new: true }  
+            );
+
+            const redeemdetails = await RedeemSchema.find({ is_deleted: { $ne: 1 } });
+    
+            return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', redeemdetails);
+        } catch (error) {
+            console.error("Error in Redeem function:", error);
+            return await middleware.sendResponse(res, Codes.ERROR, 'Something went wrong', null);
+        }
+    },
+    
+
+
     async userListById(req, res) {
         try {
     
@@ -458,8 +483,7 @@ const userModel = {
             if (!mongoose.Types.ObjectId.isValid(userId)) {
                 return middleware.sendResponse(res, Codes.ERROR, "Invalid user ID", null);
             }
-    
-        
+            
             const userDetails = await UserSchema.aggregate([
                 {
                   $match: {
