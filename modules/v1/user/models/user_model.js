@@ -446,8 +446,19 @@ const userModel = {
     async Redeem(req, res) {
         console.log('req:===========================================/>>>>>>>>>>>>>> ', req);
         try {
-    
+      // Check if user exists in tbl_user
+      const userExists = await UserSchema.findOne({ _id: req.user_id });
+      console.log('userExists: ', userExists);
+   
+      if (!userExists) {
+          return await middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
+      }
+
             const newRedeem = new RedeemSchema({
+                user_id:req.user_id,
+                full_name :userExists.full_name,
+                email :userExists.email,
+                mobile_number:userExists.mobile_number,
                 points : req.points,
                 rupees :req.points / 100,
                 upi_id :req.upi_id,
@@ -456,13 +467,16 @@ const userModel = {
     
             await newRedeem.save();
 
-            await tbl_points.findOneAndUpdate(
+            await PointSchema.findOneAndUpdate(
                 { user_id: req.user_id },  
                 { $set: { points: 0 } },  
                 { new: true }  
             );
 
-            const redeemdetails = await RedeemSchema.find({ is_deleted: { $ne: 1 } });
+            const redeemdetails = await RedeemSchema.find({ 
+                is_deleted: { $ne: 1 }, 
+                user_id: req.user_id 
+            });
     
             return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', redeemdetails);
         } catch (error) {
