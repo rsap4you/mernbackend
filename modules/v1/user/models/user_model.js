@@ -453,25 +453,33 @@ const userModel = {
       if (!userExists) {
           return await middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
       }
+      console.log('reqqqqqq====>',typeof(req.points))
+    if(Number(req.points) === 2000){
+        const newRedeem = new RedeemSchema({
+            user_id:req.user_id,
+            full_name :userExists.full_name,
+            email :userExists.email,
+            mobile_number:userExists.mobile_number,
+            points : req.points,
+            rupees :req.points / 100,
+            upi_id :req.upi_id,
 
-            const newRedeem = new RedeemSchema({
-                user_id:req.user_id,
-                full_name :userExists.full_name,
-                email :userExists.email,
-                mobile_number:userExists.mobile_number,
-                points : req.points,
-                rupees :req.points / 100,
-                upi_id :req.upi_id,
+        });
 
-            });
-    
-            await newRedeem.save();
+        await newRedeem.save();
 
-            await PointSchema.findOneAndUpdate(
-                { user_id: req.user_id },  
-                { $set: { points: 0 } },  
-                { new: true }  
-            );
+        await PointSchema.findOneAndUpdate(
+            { user_id: req.user_id },  
+            { $set: { points: 0 } },  
+            { new: true }  
+        );
+    }else{
+        console.error("Error in Redeem function  2000000:")
+        return await middleware.sendResponse(res, Codes.NOT_FOUND, 'You are not eligible for withrawal for rupees.', null);
+    }
+
+
+       
 
             const redeemdetails = await RedeemSchema.find({ 
                 is_deleted: { $ne: 1 }, 
