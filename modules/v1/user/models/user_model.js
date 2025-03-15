@@ -454,8 +454,8 @@ const userModel = {
       if (!userExists) {
           return await middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
       }
- console.log('@@@@@@@@@@@@@@@@@@@@@',Number(req.points) >= 100)
-    if(Number(req.points) >= 100){
+ console.log('@@@@@@@@@@@@@@@@@@@@@',Number(req.points) >= 2000)
+    if(Number(req.points) >= 2000){
         const newRedeem = new RedeemSchema({
             user_id:req.user_id,
             full_name :userExists.full_name,
@@ -481,7 +481,7 @@ const userModel = {
 
         return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', redeemdetails);
     }else{
-        return await middleware.sendResponse(res, Codes.ERROR, 'Something went wrong', null);
+        return await middleware.sendResponse(res, Codes.ERROR, 'You are not eligible for withrawal for rupees.', null);
     }
         } catch (error) {
             console.error("Error in Redeem function:", error);
