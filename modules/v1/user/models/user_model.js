@@ -481,8 +481,7 @@ const userModel = {
 
         return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', redeemdetails);
     }else{
-        console.error("Error in Redeem function  2000000:")
-        return await middleware.sendResponse(res, Codes.NOT_FOUND, 'rest_keywords_points_validation_error', null);
+        return await middleware.sendResponse(res, Codes.ERROR, 'Something went wrong', null);
     }
         } catch (error) {
             console.error("Error in Redeem function:", error);

@@ -71,8 +71,8 @@ const message = {
     'rest_keywords_userotpdata_notvalid_message': "Invalid User Otp Data",
     'rest_keywords_otp_notvalid_message': "Invalid Otp",
     'rest_keywords_categorydata_notvalid_message': "Invalid Category Data", 
-
-    'rest_keywords_points_validation_error':"You are not eligible for withrawal for rupees.",
+    'rest_keywords_points_validation_error': "You are not eligible for withrawal for rupees.", 
+    // 'rest_keywords_points_validation_error':"You are not eligible for withrawal for rupees.",
 
     // Post Message
     "rest_keywords_addpostdata_error_message": "Cann't add Post Please Try again Later",
