@@ -481,7 +481,7 @@ const userModel = {
 
         return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', redeemdetails);
     }else{
-        return await middleware.sendResponse(res, Codes.ERROR, 'You are not eligible for withrawal for rupees.', null);
+        return await middleware.sendResponse(res, Codes.ERROR, 'Withdrawal in rupees requires 2000 points. Earn more to proceed. 📌', null);
     }
         } catch (error) {
             return await middleware.sendResponse(res, Codes.ERROR, 'Something went wrong', null);
