@@ -445,6 +445,7 @@ const userModel = {
 
 
     async Redeem(req, res) {
+        console.log('req@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@: ', req);
         try {
 
       const userExists = await UserSchema.findOne({ _id: req.user_id });
@@ -453,7 +454,7 @@ const userModel = {
       if (!userExists) {
           return await middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
       }
-
+ console.log('@@@@@@@@@@@@@@@@@@@@@',Number(req.points) === 100)
     // if(Number(req.points) === 100){
         const newRedeem = new RedeemSchema({
             user_id:req.user_id,
