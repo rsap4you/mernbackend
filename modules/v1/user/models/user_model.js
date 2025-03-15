@@ -474,7 +474,7 @@ const userModel = {
             { $set: { points: 0 } },  
             { new: true }  
         );
-        const redeemdetails = await RedeemSchema.find({ 
+        const redeemdetails = await PointSchema.find({ 
             is_deleted: { $ne: 1 }, 
             user_id: req.user_id 
         });
