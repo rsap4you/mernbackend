@@ -488,8 +488,6 @@ const userModel = {
         }
     },
     
-
-
     async userListById(req, res) {
         try {
     
