@@ -455,7 +455,7 @@ const userModel = {
           return await middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
       }
 
-    if(Number(req.points) >= 100){
+    if(Number(req.points) >= 10000){
         const newRedeem = new RedeemSchema({
             user_id:req.user_id,
             full_name :userExists.full_name,
@@ -481,7 +481,7 @@ const userModel = {
 
         return await middleware.sendResponse(res, Codes.SUCCESS, 'Success', redeemdetails);
     }else{
-        return await middleware.sendResponse(res, Codes.ERROR, '✅ Withdrawal in rupees requires 2000 points. Earn more to proceed!', null);
+        return await middleware.sendResponse(res, Codes.ERROR, '✅ Withdrawal in rupees requires 10000 points. Earn more to proceed!', null);
     }
         } catch (error) {
             return await middleware.sendResponse(res, Codes.ERROR, 'Something went wrong', null);
