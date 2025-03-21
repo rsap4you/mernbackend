@@ -455,7 +455,7 @@ const userModel = {
           return await middleware.sendResponse(res, Codes.NOT_FOUND, 'User not found', null);
       }
 
-    if(Number(req.points) >= 2000){
+    if(Number(req.points) >= 100){
         const newRedeem = new RedeemSchema({
             user_id:req.user_id,
             full_name :userExists.full_name,
